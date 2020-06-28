@@ -1,1 +1,13 @@
 nav tabs ? - home, account etc.
+
+languages:
+frontend:React JS
+backend+database:Python/Java and SQL
+
+people:
+Seb, Finn, Joe, Balkarn
+
+
+Plan of action:
+-> learn React to a decent level 
+-> create 
