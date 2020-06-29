@@ -1,17 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {Component} from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, {Component, useState} from 'react';
+import { Image, StyleSheet, Text, View, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
-
+import { Header, Button } from 'react-native-elements';
 
 
 const Tab = createBottomTabNavigator();
 
+function Search() {
+    const [text, setText] = useState('');
+    return (
+        <View>
+            <TextInput
+                placeholder='Search'
+                onChangeText={text => setText(text)}
+                defaultValue={text}
+            />
+
+
+        </View>
+    )
+}
+
+function Stocks() {
+    return (
+        <view>
+            <Search />
+
+        </view>
+
+    );
+}
+
 function SettingsScreen() {
     return (
-
         <View
 
         />
@@ -20,24 +44,13 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-        <View
-            style={{
-                flex: 1, justifyContent: 'center', alignItems: 'center',
-                borderBottomColor: 'black',
-                borderBottomWidth: 1,
-            }}
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
 
         />
     );
 }
 
-function Stocks() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Stocks!</Text>
-        </View>
-    );
-}
+
 export default class App extends Component {
 
     render() {
