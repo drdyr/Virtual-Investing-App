@@ -4,33 +4,30 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
-import JOE from './assets/JOE.jpg';
+
 
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home!</Text>
-        </View>
-    );
-}
-
 function SettingsScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings!</Text>
-        </View>
+
+        <View
+
+        />
     );
 }
 
-function Portfolio() {
+function Overview() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={JOE} style={{ width: 100, height: 100 }} />
-            <Text>Portfolio!</Text>
-        </View>
+        <View
+            style={{
+                flex: 1, justifyContent: 'center', alignItems: 'center',
+                borderBottomColor: 'black',
+                borderBottomWidth: 1,
+            }}
+
+        />
     );
 }
 
@@ -47,14 +44,12 @@ export default class App extends Component {
         return (
             <NavigationContainer>
                 <Tab.Navigator
-                    initialRouteName={ 'Home' }
+                    initialRouteName={ 'Overview' }
                     screenOptions={({route}) => ({
                         tabBarIcon: ({focused, color, size}) => {
                             let iconName;
 
-                            if (route.name === 'Home') {
-                                iconName = focused ? 'home' : 'home';
-                            } else if (route.name === 'Portfolio') {
+                            if (route.name === 'Overview') {
                                 iconName = focused ? 'linechart' : 'linechart';
                             } else if (route.name === 'Stocks') {
                                 iconName = focused ? 'search1' : 'search1';
@@ -70,21 +65,18 @@ export default class App extends Component {
                         activeBackgroundColor: 'red',
                         activeTintColor: 'white',
                         inactiveTintColor: 'black',
-                        showLabel: false
+                        labelPosition: 'below-icon'
                     }}
 
                 >
-                    <Tab.Screen
-                        name="Home"
-                        component={HomeScreen}
-                    />
-                    <Tab.Screen
-                        name="Portfolio"
-                        component={Portfolio}
-                    />
+
                     <Tab.Screen
                         name="Stocks"
                         component={Stocks}
+                    />
+                    <Tab.Screen
+                        name="Overview"
+                        component={Overview}
                     />
                     <Tab.Screen
                         name="Settings"
@@ -97,10 +89,5 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
 });
