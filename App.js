@@ -9,25 +9,9 @@ import { Header, Button } from 'react-native-elements';
 
 const Tab = createBottomTabNavigator();
 
-function Search() {
-    const [text, setText] = useState('');
-    return (
-        <View>
-            <TextInput
-                placeholder='Search'
-                onChangeText={text => setText(text)}
-                defaultValue={text}
-            />
-
-
-        </View>
-    )
-}
-
 function Stocks() {
     return (
         <view>
-            <Search />
 
         </view>
 
