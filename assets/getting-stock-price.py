@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import CubicHermiteSpline
 import math
 
 def evalPolynomial(poly, x):
@@ -59,13 +60,13 @@ class Stock:
         for i in range(numPoints-2):
             xToFit.append(random.uniform(1,508))
             yToFit.append(random.uniform(startVal,endVal))
-        print(xToFit)
-        print(yToFit)
-        poly = np.polyfit(xToFit,yToFit,numPoints)
-        self.minutelyValues.append(startVal)
-        for minute in range(1,509):
-            self.minutelyValues.append(apoly(poly,minute))
-        self.minutelyValues.append(endVal)
+        zipped = zip(xToFit, yToFit)
+        zipped = sorted(zipped)
+        xToFit, yToFit = zip(*zipped)
+        fit = CubicHermiteSpline(x=xToFit, y=yToFit, dydx=np.zeros(numPoints))
+        self.minutelyValues = fit(minute_list)
+        for i in range(self.minutelyValues.size):
+            self.minutelyValues[i] = self.minutelyValues[i] * random.gauss(1, 0.0001)
 
     def getMinutelyValues(self):
         return self.minutelyValues
