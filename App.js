@@ -5,9 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
+import * as SQLite from 'expo-sqlite';
 
 
 const Tab = createBottomTabNavigator();
+SQLite.openDatabase("database")
 
 function Stocks() {
     return (
@@ -28,9 +30,11 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-        />
+            <Text> Overview </Text>
+
+        </View>
     );
 }
 
@@ -59,7 +63,7 @@ export default class App extends Component {
                     })}
                     tabBarOptions={{
                         inactiveBackgroundColor: 'white',
-                        activeBackgroundColor: 'red',
+                        activeBackgroundColor: '#018c7a',
                         activeTintColor: 'white',
                         inactiveTintColor: 'black',
                         labelPosition: 'below-icon'
