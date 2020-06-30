@@ -3,35 +3,94 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-no_stocks = 50
+def evalPolynomial(poly, x):
+    poly = poly[::-1]
+    y = 0
+    for p in range(poly.size):
+        y += poly[p] * (x**p)
+    return y
 
+
+def apoly(lst, x):
+    total = 0
+    for a in (lst):
+        total = total*x+a
+    return total
+
+class Stock:
+    def __init__(self):
+        self.name = "placeholder"
+        self.ticker = "tkr"
+        self.dailyValues = []
+        self.minutelyValues = []
+    
+    def generateDailyValues(self, days):
+        avg_daily_return = random.uniform(-0.002, 0.005)
+        daily_vol = random.uniform(0.010, 0.02)
+        self.dailyValues = []
+        current_price = round(random.uniform(20, 250), 2)
+        self.dailyValues.append(current_price)
+        for day in range(days-1):
+            price = round(self.dailyValues[day] * (1 + np.random.normal(avg_daily_return, daily_vol)), 2)
+            self.dailyValues.append(price)
+    
+    def getDailyValues(self):
+        return self.dailyValues
+
+    def OLDgenerateMinutelyValuesFor(self, day):
+        startVal = self.dailyValues[day]
+        endVal = self.dailyValues[day+1]
+        self.minutelyValues.append(startVal)
+        for minute in range(1,509):
+            targetPrice = startVal + ((endVal-startVal)*minute)/(509)
+            self.minutelyValues.append(targetPrice * random.gauss(1, 0.0001))
+        self.minutelyValues.append(endVal)
+
+    def generateMinutelyValuesFor(self, day):
+        startVal = self.dailyValues[day]
+        endVal = self.dailyValues[day+1]
+        xToFit = []
+        yToFit = []
+        numPoints = random.randint(4,7)
+        xToFit.append(0)
+        yToFit.append(startVal)
+        xToFit.append(509)
+        yToFit.append(endVal)
+        for i in range(numPoints-2):
+            xToFit.append(random.uniform(1,508))
+            yToFit.append(random.uniform(startVal,endVal))
+        print(xToFit)
+        print(yToFit)
+        poly = np.polyfit(xToFit,yToFit,numPoints)
+        self.minutelyValues.append(startVal)
+        for minute in range(1,509):
+            self.minutelyValues.append(apoly(poly,minute))
+        self.minutelyValues.append(endVal)
+
+    def getMinutelyValues(self):
+        return self.minutelyValues
+
+
+no_stocks = 5
 days = 365
-
 day_list = []
-
+minute_list = []
 all_stocks = []
 
 for x in range(days):
     day_list.append(x)
 
+for x in range(510):
+    minute_list.append(x)
+
 for stock in range(no_stocks):
-    count = 0
-    avg_daily_return = random.uniform(-0.002, 0.005)
-    daily_vol = random.uniform(0.010, 0.02)
-    stock_prices = []
-    current_price = round(random.uniform(20, 250), 2)
-    stock_prices.append(current_price)
-    day = 0
-    for day in range(days):
-        if count == days - 1:
-            break
-        price = round(stock_prices[count] * (1 + np.random.normal(avg_daily_return, daily_vol)), 2)
-        stock_prices.append(price)
+    all_stocks.append(Stock())
+    all_stocks[stock].generateDailyValues(days)
 
-        count += 1
+# for stock in all_stocks:
+#     plt.plot(day_list, stock.getDailyValues())
+    
+all_stocks[0].generateMinutelyValuesFor(100)
+plt.plot(minute_list,all_stocks[0].getMinutelyValues())
 
-    all_stocks.append(stock_prices)
-
-all_stocks = np.asarray(all_stocks)
-
-np.savetxt(r"C:\Users\Sebastian\Desktop\StockPrices.csv", all_stocks, delimiter=",")
+plt.show()
