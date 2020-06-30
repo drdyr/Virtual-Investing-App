@@ -52,21 +52,21 @@ class Stock:
         endVal = self.dailyValues[day+1]
         xToFit = []
         yToFit = []
-        numPoints = random.randint(4,7)
+        numPoints = random.randint(3,7)
         xToFit.append(0)
         yToFit.append(startVal)
         xToFit.append(509)
         yToFit.append(endVal)
         for i in range(numPoints-2):
             xToFit.append(random.uniform(1,508))
-            yToFit.append(random.uniform(startVal,endVal))
+            yToFit.append(random.uniform(startVal+(startVal-endVal),endVal-(startVal-endVal)))
         zipped = zip(xToFit, yToFit)
         zipped = sorted(zipped)
         xToFit, yToFit = zip(*zipped)
         fit = CubicHermiteSpline(x=xToFit, y=yToFit, dydx=np.zeros(numPoints))
         self.minutelyValues = fit(minute_list)
         for i in range(self.minutelyValues.size):
-            self.minutelyValues[i] = self.minutelyValues[i] * random.gauss(1, 0.0001)
+            self.minutelyValues[i] = self.minutelyValues[i] * random.gauss(1, 0.0002)
 
     def getMinutelyValues(self):
         return self.minutelyValues
