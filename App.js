@@ -3,14 +3,12 @@ import React, {Component, useState} from 'react';
 import { Image, StyleSheet, Text, View, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { AntDesign } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 SQLite.openDatabase("database")
 
 
@@ -21,6 +19,7 @@ function GetStocks() {
     for (i = 0; i < 51; i++) {
         var tempStock = (
         <TouchableOpacity
+            key={i}
             style={styles.button}
             onPress={() => navigation.push()}
         >
@@ -130,9 +129,10 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         height: 100,
         justifyContent: "center",
-        backgroundColor: '#018c7a',
-        borderWidth: 1,
-        borderColor: "white",
+        backgroundColor: '#004d43',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#018c7a",
         },
     stockContainer:{
         flex: 1,
@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
     },
     stockValue:{
         textAlign: 'right',
-        color: "green",
+        color: "#09ab00",
         fontSize: 48,
     },
     stockChange:{
         textAlign: 'right',
-        color: "green",
+        color: "#09ab00",
         fontSize: 16,
     }
 });
