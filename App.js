@@ -35,7 +35,7 @@ function GetStocks({ navigation }) {
                     });
                 }}
             >
-                <View style={styles.stockContainer}>
+                <View style={styles.rowContainer}>
                     <View style={styles.stockNameContainer}>
                         <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
                         <Text style={styles.stockName}>{stockNames[i]}</Text>
@@ -106,8 +106,21 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-        <View>
+        <View style = {styles.rowContainer} >
+            <View style = {styles.overviewContainer} >
+                <Text style = {styles.date} >Value as of xx.xx.xxxx</Text>
+            </View>
+            <View style = {styles.overviewContainer} >
+                <Text style = {styles.portfolioValue} >Portfolio Value:</Text>
+                <Text style = {styles.portfolioValue} >£100000.00</Text>
+            </View>
+            <View style = {styles.overviewContainer} >
+                <Button
+                    title={"Transaction History"}
 
+                >
+                </Button>
+            </View>
         </View>
     );
 }
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#018c7a",
         },
-    stockContainer:{
+    rowContainer:{
         flex: 1,
         flexDirection: 'row',
     },
@@ -215,5 +228,22 @@ const styles = StyleSheet.create({
         color: "#09ab00",
         fontSize: 16,
         paddingRight: 10,
-    }
+    },
+    overviewContainer:{
+        flex: 3,
+        margin: 10,
+        flexDirection: 'column',
+    },
+    portfolioValue: {
+        fontSize: 32,
+        color: 'black',
+        textAlign:'center',
+
+    },
+    date: {
+        fontSize: 24,
+        color: 'black',
+        textAlign:'left',
+
+    },
 });
