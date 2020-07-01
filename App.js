@@ -77,8 +77,16 @@ function Stock({ route, navigation }) {
 function Stocks() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={GetStocks} />
-            <Stack.Screen name="Stock" component={Stock} />
+            <Stack.Screen name="Home" component={GetStocks} options={{
+                headerShown: false,
+            }}/>
+            <Stack.Screen name="Stock" component={Stock} options={{
+                headerTitle: '',
+                headerStyle:  {
+                    backgroundColor: '#393e42',
+                },
+                headerTintColor: 'white',
+            }}/>
         </Stack.Navigator>
     );
 }
@@ -124,10 +132,10 @@ export default class App extends Component {
                         },
                     })}
                     tabBarOptions={{
-                        inactiveBackgroundColor: 'white',
+                        inactiveBackgroundColor: '#393e42',
                         activeBackgroundColor: '#018c7a',
                         activeTintColor: 'white',
-                        inactiveTintColor: 'black',
+                        inactiveTintColor: 'white',
                         labelPosition: 'below-icon'
                     }}
 
