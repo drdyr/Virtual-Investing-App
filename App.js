@@ -22,26 +22,30 @@ function GetStocks({ navigation }) {
     const stocks = []
     let i;
     for (i = 0; i < 50; i++) {
-        var tempStock = (
-        <TouchableOpacity
-            key={i}
-            style={styles.button}
-            onPress={() => navigation.push('Stock', {
-                stockName: stockNames[i],
-                stockAbbrev: stockAbbrevs[i],
-            })}
-        >
-            <View style={styles.stockContainer}>
-                <View style={styles.stockNameContainer}>
-                    <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
-                    <Text style={styles.stockName}>{stockNames[i]}</Text>
+        const name = stockNames[i];
+        const abbrev = stockAbbrevs[i];
+        const tempStock = (
+            <TouchableOpacity
+                key={i}
+                style={styles.button}
+                onPress={() => {
+                    navigation.push('Stock', {
+                        stockName: name,
+                        stockAbbrev: abbrev,
+                    });
+                }}
+            >
+                <View style={styles.stockContainer}>
+                    <View style={styles.stockNameContainer}>
+                        <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
+                        <Text style={styles.stockName}>{stockNames[i]}</Text>
+                    </View>
+                    <View style={styles.stockNameContainer}>
+                        <Text style={styles.stockValue}>120</Text>
+                        <Text style={styles.stockChange}>▲ 10</Text>
+                    </View>
                 </View>
-                <View style={styles.stockNameContainer}>
-                    <Text style={styles.stockValue}>120</Text>
-                    <Text style={styles.stockChange}>▲ 10</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
         );
         stocks[i] = (tempStock);
     }
@@ -60,6 +64,7 @@ function GetStocks({ navigation }) {
 function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
+    console.log(route.params)
     return(
         <View>
             <Button
