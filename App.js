@@ -8,6 +8,7 @@ import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
 
+
 const Tab = createBottomTabNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
@@ -26,7 +27,7 @@ function GetStocks() {
             style={styles.button}
             onPress={() => navigation.push()}
         >
-            <View style={styles.stockContainer}>
+            <View style={styles.rowContainer}>
                 <View style={styles.stockNameContainer}>
                     <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
                     <Text style={styles.stockName}>{stockNames[i]}</Text>
@@ -44,6 +45,7 @@ function GetStocks() {
         <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
             <SearchBar
                 placeholder="Type Here..."
+
             />
             {stocks}
         </ScrollView>
@@ -69,12 +71,26 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-        <View>
+            <View style = {styles.rowContainer} >
+                <View style = {styles.overviewContainer} >
+                    <Text style = {styles.date} >Value as of xx.xx.xxxx</Text>
+                </View>
+                <View style = {styles.overviewContainer} >
+                    <Text style = {styles.portfolioValue} >Portfolio Value:</Text>
+                    <Text style = {styles.portfolioValue} >£100000.00</Text>
+                </View>
+                <View style = {styles.overviewContainer} >
+                    <Button
+                        title={"Transaction History"}
 
-        </View>
+                    >
+
+                    </Button>
+                </View>
+            </View>
+
     );
 }
-
 
 
 export default class App extends Component {
@@ -128,10 +144,11 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         flexDirection: "row",
-        justifyContent: 'center',},
+        justifyContent: 'center',
+    },
 
     button:{
         alignSelf: "stretch",
@@ -141,8 +158,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#018c7a",
-        },
-    stockContainer:{
+    },
+    rowContainer:{
         flex: 1,
         flexDirection: 'row',
     },
@@ -150,33 +167,54 @@ const styles = StyleSheet.create({
         flex: 3,
         margin: 10,
         flexDirection: 'column',
+
     },
-    stockValueContainer:{
-        flex: 1,
-        margin: 10,
-        textAlignVertical: 'center',
-        flexDirection: 'column',
-    },
+
+
     stockAbbrev: {
         color: 'white',
         fontSize: 48,
-        paddingLeft: 10,
+        paddingLeft: 30,
     },
     stockName:{
         color: "white",
         fontSize: 16,
-        paddingLeft: 10,
+        paddingLeft: 30,
     },
     stockValue:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 48,
-        paddingRight: 10,
+        paddingRight: 30,
     },
     stockChange:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 16,
-        paddingRight: 10,
-    }
+        paddingRight: 30,
+    },
+
+    overviewContainer:{
+        flex: 3,
+        margin: 10,
+        flexDirection: 'column',
+
+    },
+    date:{
+        textAlign: 'left',
+        color: 'black',
+        fontSize: 24,
+    },
+    portfolioValue: {
+        textAlign: 'center',
+        fontSize: 32,
+        color: 'black',
+    },
+    transactionHistory: {
+        textAlign: 'right',
+
+        color: 'black',
+    },
+
+
 });
