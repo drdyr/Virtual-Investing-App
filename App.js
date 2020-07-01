@@ -11,11 +11,12 @@ import { SearchBar } from 'react-native-elements';
 const Tab = createBottomTabNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
+
 function GetStocks() {
     // REPLACE THIS CODE WITH GETTING FROM DB
 
-    stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
-
+    const stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
+    const stockAbbrevs = ['BANA', 'GD', 'CNS', 'VSTA', 'KENT', 'HALL', 'HYRU', 'BSEC', 'SEO', 'FRNT', 'PTRI', 'OGH', 'BE', 'APH', 'ADEN', 'CMPS', 'EXAN', 'HOME', 'IMPC', 'ICAL', 'GG', 'BFS', 'UPSC', 'MAIN', 'SB', 'AT', 'STGR', 'RMCO', 'RDS', 'ALIN', 'COVE', 'BLOL', 'EVRG', 'ALPN', 'LDN', 'NYO', 'ENTT', 'CHG', 'CAM', 'GRS', 'CCTS', 'CPLN', 'LYNX', 'CHRG', 'LB', 'WG', 'STWT', 'EXBV', 'DINK', 'PKSI']
     const stocks = []
     let i;
     for (i = 0; i < 50; i++) {
@@ -27,7 +28,7 @@ function GetStocks() {
         >
             <View style={styles.stockContainer}>
                 <View style={styles.stockNameContainer}>
-                    <Text style={styles.stockAbbrev}>STCK</Text>
+                    <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
                     <Text style={styles.stockName}>{stockNames[i]}</Text>
                 </View>
                 <View style={styles.stockNameContainer}>
@@ -35,7 +36,8 @@ function GetStocks() {
                     <Text style={styles.stockChange}>▲ 10</Text>
                 </View>
             </View>
-        </TouchableOpacity>);
+        </TouchableOpacity>
+        );
         stocks[i] = (tempStock);
     }
     return (
@@ -72,6 +74,7 @@ function Overview() {
         </View>
     );
 }
+
 
 
 export default class App extends Component {
@@ -157,19 +160,23 @@ const styles = StyleSheet.create({
     stockAbbrev: {
         color: 'white',
         fontSize: 48,
+        paddingLeft: 10,
     },
     stockName:{
         color: "white",
         fontSize: 16,
+        paddingLeft: 10,
     },
     stockValue:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 48,
+        paddingRight: 10,
     },
     stockChange:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 16,
+        paddingRight: 10,
     }
 });
