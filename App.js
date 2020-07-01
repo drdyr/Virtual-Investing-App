@@ -7,13 +7,14 @@ import { AntDesign } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
-
+import {createStackNavigator} from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
 
-function GetStocks() {
+function GetStocks({ navigation }) {
     // REPLACE THIS CODE WITH GETTING FROM DB
 
     const stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
@@ -21,43 +22,77 @@ function GetStocks() {
     const stocks = []
     let i;
     for (i = 0; i < 50; i++) {
-        var tempStock = (
-        <TouchableOpacity
-            key={i}
-            style={styles.button}
-            onPress={() => navigation.push()}
-        >
-            <View style={styles.rowContainer}>
-                <View style={styles.stockNameContainer}>
-                    <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
-                    <Text style={styles.stockName}>{stockNames[i]}</Text>
+        const name = stockNames[i];
+        const abbrev = stockAbbrevs[i];
+        const tempStock = (
+            <TouchableOpacity
+                key={i}
+                style={styles.button}
+                onPress={() => {
+                    navigation.push('Stock', {
+                        stockName: name,
+                        stockAbbrev: abbrev,
+                    });
+                }}
+            >
+                <View style={styles.stockContainer}>
+                    <View style={styles.stockNameContainer}>
+                        <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
+                        <Text style={styles.stockName}>{stockNames[i]}</Text>
+                    </View>
+                    <View style={styles.stockNameContainer}>
+                        <Text style={styles.stockValue}>120</Text>
+                        <Text style={styles.stockChange}>▲ 10</Text>
+                    </View>
                 </View>
-                <View style={styles.stockNameContainer}>
-                    <Text style={styles.stockValue}>120</Text>
-                    <Text style={styles.stockChange}>▲ 10</Text>
-                </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
         );
         stocks[i] = (tempStock);
     }
     return (
+        <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
             <SearchBar
                 placeholder="Type Here..."
-
             />
             {stocks}
         </ScrollView>
+        </SafeAreaView>
+    );
+}
+
+function Stock({ route, navigation }) {
+    const { stockName } = route.params;
+    const { stockAbbrev } = route.params;
+    console.log(route.params)
+    return(
+        <View>
+            <Button
+                title= "Go back"
+                onPress={() =>
+                    navigation.pop()
+                }
+            />
+            <Text>{ stockName }</Text>
+            <Text>{ stockAbbrev }</Text>
+        </View>
     );
 }
 
 function Stocks() {
     return (
-        <SafeAreaView style={styles.container}>
-                <GetStocks />
-        </SafeAreaView>
-
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={GetStocks} options={{
+                headerShown: false,
+            }}/>
+            <Stack.Screen name="Stock" component={Stock} options={{
+                headerTitle: '',
+                headerStyle:  {
+                    backgroundColor: '#393e42',
+                },
+                headerTintColor: 'white',
+            }}/>
+        </Stack.Navigator>
     );
 }
 
@@ -71,26 +106,12 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-            <View style = {styles.rowContainer} >
-                <View style = {styles.overviewContainer} >
-                    <Text style = {styles.date} >Value as of xx.xx.xxxx</Text>
-                </View>
-                <View style = {styles.overviewContainer} >
-                    <Text style = {styles.portfolioValue} >Portfolio Value:</Text>
-                    <Text style = {styles.portfolioValue} >£100000.00</Text>
-                </View>
-                <View style = {styles.overviewContainer} >
-                    <Button
-                        title={"Transaction History"}
+        <View>
 
-                    >
-
-                    </Button>
-                </View>
-            </View>
-
+        </View>
     );
 }
+
 
 
 export default class App extends Component {
@@ -116,10 +137,10 @@ export default class App extends Component {
                         },
                     })}
                     tabBarOptions={{
-                        inactiveBackgroundColor: 'white',
+                        inactiveBackgroundColor: '#393e42',
                         activeBackgroundColor: '#018c7a',
                         activeTintColor: 'white',
-                        inactiveTintColor: 'black',
+                        inactiveTintColor: 'white',
                         labelPosition: 'below-icon'
                     }}
 
@@ -144,11 +165,10 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container:{
         flex: 1,
         flexDirection: "row",
-        justifyContent: 'center',
-    },
+        justifyContent: 'center',},
 
     button:{
         alignSelf: "stretch",
@@ -158,8 +178,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#018c7a",
-    },
-    rowContainer:{
+        },
+    stockContainer:{
         flex: 1,
         flexDirection: 'row',
     },
@@ -167,54 +187,33 @@ const styles = StyleSheet.create({
         flex: 3,
         margin: 10,
         flexDirection: 'column',
-
     },
-
-
+    stockValueContainer:{
+        flex: 1,
+        margin: 10,
+        textAlignVertical: 'center',
+        flexDirection: 'column',
+    },
     stockAbbrev: {
         color: 'white',
         fontSize: 48,
-        paddingLeft: 30,
+        paddingLeft: 10,
     },
     stockName:{
         color: "white",
         fontSize: 16,
-        paddingLeft: 30,
+        paddingLeft: 10,
     },
     stockValue:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 48,
-        paddingRight: 30,
+        paddingRight: 10,
     },
     stockChange:{
         textAlign: 'right',
         color: "#09ab00",
         fontSize: 16,
-        paddingRight: 30,
-    },
-
-    overviewContainer:{
-        flex: 3,
-        margin: 10,
-        flexDirection: 'column',
-
-    },
-    date:{
-        textAlign: 'left',
-        color: 'black',
-        fontSize: 24,
-    },
-    portfolioValue: {
-        textAlign: 'center',
-        fontSize: 32,
-        color: 'black',
-    },
-    transactionHistory: {
-        textAlign: 'right',
-
-        color: 'black',
-    },
-
-
+        paddingRight: 10,
+    }
 });
