@@ -8,11 +8,37 @@ import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
+import * as FileSystem from "expo-file-system";
+import * as Asset from "expo-asset";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
+let db = SQLite.openDatabase("db");
+
+async function database() {
+    let dirInfo;
+    try {
+        dirInfo = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite`);
+    } catch(err) { console.log("dir exists") };
+    if (!dirInfo.exists) {
+        try {
+            await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`, { intermediates: true });
+        } catch(err) { consoel.log("could not create dir") }
+    };
+    console.log()
+    await FileSystem.downloadAsync(
+        Asset.fromModule(require('/assets/db/db.db')).uri,
+        FileSystem.documentDirectory + 'SQLite/db.db'
+    ).then(({ uri }) => {
+        console.log('Finished downloading to ', uri)
+    })
+        .catch(error => {
+            console.error(error);
+        })
+    db = SQLite.openDatabase("db")
+}
 
 function GetStocks({ navigation }) {
     // REPLACE THIS CODE WITH GETTING FROM DB
@@ -97,6 +123,9 @@ function Stocks() {
 }
 
 function SettingsScreen() {
+    database().then(r => console.log("TTT")
+    )
+
     return (
         <View
 
