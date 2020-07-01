@@ -9,18 +9,21 @@ import * as SQLite from 'expo-sqlite';
 
 
 const Tab = createBottomTabNavigator();
-SQLite.openDatabase("database")
+//SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
 function GetStocks() {
     // REPLACE THIS CODE WITH GETTING FROM DB
+
+    stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
+
     const stocks = []
     let i;
-    for (i = 0; i < 51; i++) {
+    for (i = 0; i < 50; i++) {
         var tempStock = (
         <TouchableOpacity
             style={styles.button}
         >
-            <Text style={styles.buttonText}>Stock {i}</Text>
+            <Text style={styles.buttonText}>{stockNames[i]}</Text>
         </TouchableOpacity>);
         stocks[i] = (tempStock);
     }
