@@ -11,6 +11,7 @@ import * as SQLite from 'expo-sqlite';
 const Tab = createBottomTabNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
+
 function GetStocks() {
     // REPLACE THIS CODE WITH GETTING FROM DB
 
@@ -21,9 +22,20 @@ function GetStocks() {
     for (i = 0; i < 50; i++) {
         var tempStock = (
         <TouchableOpacity
+            key={i}
             style={styles.button}
+            onPress={() => navigation.push()}
         >
-            <Text style={styles.buttonText}>{stockNames[i]}</Text>
+            <View style={styles.stockContainer}>
+                <View style={styles.stockNameContainer}>
+                    <Text style={styles.stockAbbrev}>STCK</Text>
+                    <Text style={styles.stockName}>{stockNames[i]}</Text>
+                </View>
+                <View style={styles.stockNameContainer}>
+                    <Text style={styles.stockValue}>120</Text>
+                    <Text style={styles.stockChange}>▲ 10</Text>
+                </View>
+            </View>
         </TouchableOpacity>);
         stocks[i] = (tempStock);
     }
@@ -117,16 +129,45 @@ const styles = StyleSheet.create({
         justifyContent: 'center',},
 
     button:{
-            alignSelf: "stretch",
-            height: 100,
-            justifyContent: "center",
-            backgroundColor: '#018c7a',
-            borderWidth: 1,
-            borderColor: "white",
+        alignSelf: "stretch",
+        height: 100,
+        justifyContent: "center",
+        backgroundColor: '#004d43',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#018c7a",
         },
-    buttonText:{
+    stockContainer:{
+        flex: 1,
+        flexDirection: 'row',
+    },
+    stockNameContainer:{
+        flex: 3,
+        margin: 10,
+        flexDirection: 'column',
+    },
+    stockValueContainer:{
+        flex: 1,
+        margin: 10,
+        textAlignVertical: 'center',
+        flexDirection: 'column',
+    },
+    stockAbbrev: {
+        color: 'white',
+        fontSize: 48,
+    },
+    stockName:{
         color: "white",
-        alignSelf: 'center',
-        fontSize: 25,
+        fontSize: 16,
+    },
+    stockValue:{
+        textAlign: 'right',
+        color: "#09ab00",
+        fontSize: 48,
+    },
+    stockChange:{
+        textAlign: 'right',
+        color: "#09ab00",
+        fontSize: 16,
     }
 });
