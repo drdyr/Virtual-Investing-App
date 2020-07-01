@@ -6,11 +6,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
-
+import { SearchBar } from 'react-native-elements';
 
 const Tab = createBottomTabNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
-
 
 function GetStocks() {
     // REPLACE THIS CODE WITH GETTING FROM DB
@@ -41,6 +40,9 @@ function GetStocks() {
     }
     return (
         <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
+            <SearchBar
+                placeholder="Type Here..."
+            />
             {stocks}
         </ScrollView>
     );
