@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {Component, useState} from 'react';
-import { Image, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Image, StyleSheet, Text, View, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -11,11 +11,31 @@ import * as SQLite from 'expo-sqlite';
 const Tab = createBottomTabNavigator();
 SQLite.openDatabase("database")
 
+function GetStocks() {
+    // REPLACE THIS CODE WITH GETTING FROM DB
+    const stocks = []
+    let i;
+    for (i = 0; i < 51; i++) {
+        var tempStock = (
+        <TouchableOpacity
+            style={styles.button}
+        >
+            <Text style={styles.buttonText}>Stock {i}</Text>
+        </TouchableOpacity>);
+        stocks[i] = (tempStock);
+    }
+    return (
+        <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
+            {stocks}
+        </ScrollView>
+    );
+}
+
 function Stocks() {
     return (
-        <view>
-
-        </view>
+        <SafeAreaView style={styles.container}>
+                <GetStocks />
+        </SafeAreaView>
 
     );
 }
@@ -30,9 +50,7 @@ function SettingsScreen() {
 
 function Overview() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-            <Text> Overview </Text>
+        <View>
 
         </View>
     );
@@ -90,5 +108,22 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'center',},
 
+    button:{
+            alignSelf: "stretch",
+            height: 100,
+            justifyContent: "center",
+            backgroundColor: '#018c7a',
+            borderWidth: 1,
+            borderColor: "white",
+        },
+    buttonText:{
+        color: "white",
+        alignSelf: 'center',
+        fontSize: 25,
+    }
 });
