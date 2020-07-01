@@ -50,14 +50,14 @@ function GetStocks({ navigation }) {
         stocks[i] = (tempStock);
     }
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
         <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
             <SearchBar
                 placeholder="Type Here..."
             />
             {stocks}
         </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -111,15 +111,13 @@ function Overview() {
                 <Text style = {styles.date} >Value as of xx.xx.xxxx</Text>
             </View>
             <View style = {styles.overviewContainer} >
-                <Text style = {styles.portfolioValue} >Portfolio Value:</Text>
+                <Text style = {styles.portfolioValue} >Value:</Text>
                 <Text style = {styles.portfolioValue} >£100000.00</Text>
             </View>
             <View style = {styles.overviewContainer} >
-                <Button
-                    title={"Transaction History"}
-
-                >
-                </Button>
+                <TouchableOpacity style={styles.buttonSmall}>
+                    <Text style={styles.touchableLabel}>Transaction History</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -132,6 +130,7 @@ export default class App extends Component {
     render() {
         return (
             <NavigationContainer>
+                <StatusBar hidden />
                 <Tab.Navigator
                     initialRouteName={ 'Overview' }
                     screenOptions={({route}) => ({
@@ -192,6 +191,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#018c7a",
         },
+    buttonSmall:{
+        alignSelf: "stretch",
+        height: 50,
+        justifyContent: "center",
+        backgroundColor: '#004d43',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#018c7a",
+    },
     rowContainer:{
         flex: 1,
         flexDirection: 'row',
@@ -229,19 +237,24 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingRight: 10,
     },
+    touchableLabel:{
+        textAlign: 'center',
+        color: "white",
+        fontSize: 18,
+    },
     overviewContainer:{
         flex: 3,
         margin: 10,
         flexDirection: 'column',
     },
     portfolioValue: {
-        fontSize: 32,
+        fontSize: 18,
         color: 'black',
         textAlign:'center',
 
     },
     date: {
-        fontSize: 24,
+        fontSize: 18,
         color: 'black',
         textAlign:'left',
 
