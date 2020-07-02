@@ -68,7 +68,7 @@ function GetStocks({ navigation }) {
         stocks[i] = (tempStock);
     }
     return (
-        <View >
+        <View style={styles.stockscontainer}>
             <SearchBar
                 placeholder="Type Here..."
             />
@@ -180,7 +180,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: 'center',},
-
+    stockscontainer: {
+        flex: 1,
+        justifyContent: 'center',
+    },
     button:{
         alignSelf: "stretch",
         height: 100,
