@@ -17,17 +17,18 @@ const Stack = createStackNavigator();
 function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
+    navigation.setOptions({headerTitle: stockName})
     console.log(route.params)
     return(
-        <View>
+        <View style={styles.containerDark}>
             {/* <Button
                 title= "Go back"
                 onPress={() =>
                     navigation.pop()
                 }
             /> */}
-            <Text>{ stockName }</Text>
-            <Text>{ stockAbbrev }</Text>
+            <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
+            <Text style={styles.stockName}>{ stockName }</Text>
         </View>
     );
 }
@@ -59,8 +60,8 @@ function GetStocks({ navigation }) {
                         <Text style={styles.stockName}>{stockNames[i]}</Text>
                     </View>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockValue}>120</Text>
-                        <Text style={styles.stockChange}>▲ 10</Text>
+                        <Text style={styles.stockValue}>{Math.floor(Math.random() * 100)}</Text>
+                        <Text style={styles.stockChange}>▲ {Math.floor(Math.random() * 10)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -83,7 +84,7 @@ function Portfolio({ navigation }){
     return (
         <View style={styles.rowContainer} >
             <View style={styles.overviewContainer} >
-                <Text style={styles.date} >Value as of xx.xx.xxxx</Text>
+                <Text style={styles.date} >xx.xx.xxxx</Text>
             </View>
             <View style={styles.overviewContainer} >
                 <Text style={styles.portfolioValue} >£100000.00</Text>
@@ -273,6 +274,12 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign:'center',
 
+    },
+    containerDark: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: 'center',
+        backgroundColor: '#004d43',
     },
     date: {
         fontSize: 18,
