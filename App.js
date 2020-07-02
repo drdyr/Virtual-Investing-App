@@ -3,8 +3,7 @@ import React, {Component, useState} from 'react';
 import { Image, StyleSheet, Text, View, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-import { HistoryOutlined } from '@ant-design/icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
@@ -87,12 +86,12 @@ function Portfolio({ navigation }){
             <View style={styles.overviewContainer} >
                 <Text style={styles.date} >xx.xx.xxxx</Text>
             </View>
-            <View style={styles.overviewContainer} >
+            <View style={styles.overviewContainer}>
                 <Text style={styles.portfolioValue} >£100000.00</Text>
             </View>
             <View style={styles.overviewContainer} >
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.push('Transaction History')}>
-                    <HistoryOutlined style={{ fontSize: '24px', color: 'white' }}/>
+                    <MaterialIcons name="history" size={24} color="white"/>
                 </TouchableOpacity>
             </View>
             </Header>
@@ -218,10 +217,13 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         height: 50,
         justifyContent: "center",
+        alignContent: 'center',
     },
     header:{
         height: 65,
-        backgroundColor: '#393e42'
+        backgroundColor: '#393e42',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     rowContainer:{
         flex: 1,
@@ -269,6 +271,8 @@ const styles = StyleSheet.create({
         flex: 3,
         margin: 10,
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     portfolioValue: {
         fontSize: 18,
