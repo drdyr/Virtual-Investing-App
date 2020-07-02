@@ -67,10 +67,13 @@ function GetStocks({ navigation }) {
         );
         stocks[i] = (tempStock);
     }
+    const search = App.getSearch()
     return (
         <View style={styles.stockscontainer}>
             <SearchBar
                 placeholder="Type Here..."
+                onChangeText={App.updateSearch}
+                value={search}
             />
             <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
                 {stocks}
@@ -79,10 +82,24 @@ function GetStocks({ navigation }) {
     );
 }
 
+
 export default class App extends Component {
 
+    state = {
+        search: '',
+    };
+
+    static updateSearch = (search) => {
+        this.setState({ search });
+        console.log(state.search)
+    };
+
+    static getSearch() {
+        return (this.state)
+    }
 
     Stocks() { //Stocks tab
+
         return (
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={GetStocks} options={{ //Home stack shows the stocks list
@@ -108,6 +125,7 @@ export default class App extends Component {
     }
 
     Overview() { //Overview tab
+
         return (
             <View style={styles.rowContainer} >
                 <View style={styles.overviewContainer} >
@@ -127,6 +145,9 @@ export default class App extends Component {
     }
 
     render() {
+
+        const search = this.state
+        
         return (
             <NavigationContainer>
                 <StatusBar hidden />
