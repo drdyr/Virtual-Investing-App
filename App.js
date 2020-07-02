@@ -3,7 +3,7 @@ import React, {Component, useState} from 'react';
 import { Image, StyleSheet, Text, View, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
@@ -17,17 +17,18 @@ const Stack = createStackNavigator();
 function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
+    navigation.setOptions({headerTitle: stockName})
     console.log(route.params)
     return(
-        <View>
+        <View style={styles.containerDark}>
             {/* <Button
                 title= "Go back"
                 onPress={() =>
                     navigation.pop()
                 }
             /> */}
-            <Text>{ stockName }</Text>
-            <Text>{ stockAbbrev }</Text>
+            <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
+            <Text style={styles.stockName}>{ stockName }</Text>
         </View>
     );
 }
@@ -59,8 +60,8 @@ function GetStocks({ navigation }) {
                         <Text style={styles.stockName}>{stockNames[i]}</Text>
                     </View>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockValue}>120</Text>
-                        <Text style={styles.stockChange}>▲ 10</Text>
+                        <Text style={styles.stockValue}>{Math.floor(Math.random() * 100)}</Text>
+                        <Text style={styles.stockChange}>▲ {Math.floor(Math.random() * 10)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -82,7 +83,37 @@ function GetStocks({ navigation }) {
     );
 }
 
+function Portfolio({ navigation }){
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
 
+    today = mm + '.' + dd + '.' + yyyy;
+    return (
+            <Header  containerStyle={styles.header}>
+            <View style={styles.overviewContainer} >
+                <Text style={styles.date} >{ today }</Text>
+            </View>
+            <View style={styles.overviewContainer}>
+                <Text style={styles.portfolioValue} >£100000.00</Text>
+            </View>
+            <View style={styles.overviewContainer} >
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.push('Transaction History')}>
+                    <MaterialIcons name="history" size={24} color="white"/>
+                </TouchableOpacity>
+            </View>
+            </Header>
+    )
+}
+
+function TransactionHistory({ navigation }) {
+    return (
+        <View>
+
+        </View>
+    )
+}
 export default class App extends Component {
 
     state = {
@@ -127,20 +158,14 @@ export default class App extends Component {
     Overview() { //Overview tab
 
         return (
-            <View style={styles.rowContainer} >
-                <View style={styles.overviewContainer} >
-                    <Text style={styles.date} >Value as of xx.xx.xxxx</Text>
-                </View>
-                <View style={styles.overviewContainer} >
-                    <Text style={styles.portfolioValue} >Value:</Text>
-                    <Text style={styles.portfolioValue} >£100000.00</Text>
-                </View>
-                <View style={styles.overviewContainer} >
-                    <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.touchableLabel}>Transaction History</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <Stack.Navigator>
+                <Stack.Screen name="Overview" component={Portfolio} options = {{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Transaction History" component={TransactionHistory} options = {{
+
+                }} />
+            </Stack.Navigator>
         );
     }
 
@@ -218,10 +243,13 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         height: 50,
         justifyContent: "center",
-        backgroundColor: '#004d43',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: "#018c7a",
+        alignContent: 'center',
+    },
+    header:{
+        height: 65,
+        backgroundColor: '#393e42',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     rowContainer:{
         flex: 1,
@@ -262,24 +290,30 @@ const styles = StyleSheet.create({
     },
     touchableLabel:{
         textAlign: 'center',
-        color: "white",
+        color: '#018c7a',
         fontSize: 18,
     },
     overviewContainer:{
-        flex: 3,
-        margin: 10,
+        flex: 1,
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     portfolioValue: {
         fontSize: 18,
-        color: 'black',
+        color: 'white',
         textAlign:'center',
 
     },
+    containerDark: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: 'center',
+        backgroundColor: '#004d43',
+    },
     date: {
         fontSize: 18,
-        color: 'black',
+        color: 'white',
         textAlign:'left',
-
     },
 });
