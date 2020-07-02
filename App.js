@@ -79,6 +79,31 @@ function GetStocks({ navigation }) {
     );
 }
 
+function Portfolio({ navigation }){
+    return (
+        <View style={styles.rowContainer} >
+            <View style={styles.overviewContainer} >
+                <Text style={styles.date} >Value as of xx.xx.xxxx</Text>
+            </View>
+            <View style={styles.overviewContainer} >
+                <Text style={styles.portfolioValue} >£100000.00</Text>
+            </View>
+            <View style={styles.overviewContainer} >
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.push('Transaction History')}>
+                    <Text style={styles.touchableLabel}>Transaction History</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+
+function TransactionHistory({ navigation }) {
+    return (
+        <View>
+
+        </View>
+    )
+}
 export default class App extends Component {
 
 
@@ -109,20 +134,14 @@ export default class App extends Component {
 
     Overview() { //Overview tab
         return (
-            <View style={styles.rowContainer} >
-                <View style={styles.overviewContainer} >
-                    <Text style={styles.date} >Value as of xx.xx.xxxx</Text>
-                </View>
-                <View style={styles.overviewContainer} >
-                    <Text style={styles.portfolioValue} >Value:</Text>
-                    <Text style={styles.portfolioValue} >£100000.00</Text>
-                </View>
-                <View style={styles.overviewContainer} >
-                    <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.touchableLabel}>Transaction History</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <Stack.Navigator>
+                <Stack.Screen name="Overview" component={Portfolio} options = {{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Transaction History" component={TransactionHistory} options = {{
+
+                }} />
+            </Stack.Navigator>
         );
     }
 
