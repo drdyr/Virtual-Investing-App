@@ -81,10 +81,16 @@ function GetStocks({ navigation }) {
 }
 
 function Portfolio({ navigation }){
+    let today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
+
+    today = mm + '.' + dd + '.' + yyyy;
     return (
             <Header  containerStyle={styles.header}>
             <View style={styles.overviewContainer} >
-                <Text style={styles.date} >xx.xx.xxxx</Text>
+                <Text style={styles.date} >{ today }</Text>
             </View>
             <View style={styles.overviewContainer}>
                 <Text style={styles.portfolioValue} >£100000.00</Text>
@@ -268,8 +274,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     overviewContainer:{
-        flex: 3,
-        margin: 10,
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
