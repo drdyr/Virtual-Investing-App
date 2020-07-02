@@ -9,10 +9,28 @@ import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
 
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function Stock({ route, navigation }) {
+    const { stockName } = route.params;
+    const { stockAbbrev } = route.params;
+    console.log(route.params)
+    return(
+        <View>
+            {/* <Button
+                title= "Go back"
+                onPress={() =>
+                    navigation.pop()
+                }
+            /> */}
+            <Text>{ stockName }</Text>
+            <Text>{ stockAbbrev }</Text>
+        </View>
+    );
+}
 
 function GetStocks({ navigation }) {
     // REPLACE THIS CODE WITH GETTING FROM DB
@@ -50,82 +68,63 @@ function GetStocks({ navigation }) {
         stocks[i] = (tempStock);
     }
     return (
-        <View style={styles.container}>
-        <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
+        <View >
             <SearchBar
                 placeholder="Type Here..."
             />
-            {stocks}
-        </ScrollView>
+            <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
+                {stocks}
+            </ScrollView>
         </View>
     );
 }
-
-function Stock({ route, navigation }) {
-    const { stockName } = route.params;
-    const { stockAbbrev } = route.params;
-    console.log(route.params)
-    return(
-        <View>
-            <Button
-                title= "Go back"
-                onPress={() =>
-                    navigation.pop()
-                }
-            />
-            <Text>{ stockName }</Text>
-            <Text>{ stockAbbrev }</Text>
-        </View>
-    );
-}
-
-function Stocks() {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={GetStocks} options={{
-                headerShown: false,
-            }}/>
-            <Stack.Screen name="Stock" component={Stock} options={{
-                headerTitle: '',
-                headerStyle:  {
-                    backgroundColor: '#393e42',
-                },
-                headerTintColor: 'white',
-            }}/>
-        </Stack.Navigator>
-    );
-}
-
-function SettingsScreen() {
-    return (
-        <View
-
-        />
-    );
-}
-
-function Overview() {
-    return (
-        <View style = {styles.rowContainer} >
-            <View style = {styles.overviewContainer} >
-                <Text style = {styles.date} >Value as of xx.xx.xxxx</Text>
-            </View>
-            <View style = {styles.overviewContainer} >
-                <Text style = {styles.portfolioValue} >Value:</Text>
-                <Text style = {styles.portfolioValue} >£100000.00</Text>
-            </View>
-            <View style = {styles.overviewContainer} >
-                <TouchableOpacity style={styles.buttonSmall}>
-                    <Text style={styles.touchableLabel}>Transaction History</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-}
-
-
 
 export default class App extends Component {
+
+
+    Stocks() { //Stocks tab
+        return (
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={GetStocks} options={{ //Home stack shows the stocks list
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Stock" component={Stock} options={{ //Each stock has a page that goes on top of the stack
+                    headerTitle: '',
+                    headerStyle: {
+                        backgroundColor: '#393e42',
+                    },
+                    headerTintColor: 'white',
+                }} />
+            </Stack.Navigator>
+        );
+    }
+
+    SettingsScreen() { //Settings tab
+        return (
+            <View
+
+            />
+        );
+    }
+
+    Overview() { //Overview tab
+        return (
+            <View style={styles.rowContainer} >
+                <View style={styles.overviewContainer} >
+                    <Text style={styles.date} >Value as of xx.xx.xxxx</Text>
+                </View>
+                <View style={styles.overviewContainer} >
+                    <Text style={styles.portfolioValue} >Value:</Text>
+                    <Text style={styles.portfolioValue} >£100000.00</Text>
+                </View>
+                <View style={styles.overviewContainer} >
+                    <TouchableOpacity style={styles.buttonSmall}>
+                        <Text style={styles.touchableLabel}>Transaction History</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 
     render() {
         return (
@@ -160,15 +159,15 @@ export default class App extends Component {
 
                     <Tab.Screen
                         name="Stocks"
-                        component={Stocks}
+                        component={this.Stocks}
                     />
                     <Tab.Screen
                         name="Overview"
-                        component={Overview}
+                        component={this.Overview}
                     />
                     <Tab.Screen
                         name="Settings"
-                        component={SettingsScreen}
+                        component={this.SettingsScreen}
                     />
                 </Tab.Navigator>
             </NavigationContainer>);
@@ -222,7 +221,7 @@ const styles = StyleSheet.create({
     },
     stockName:{
         color: "white",
-        fontSize: 16,
+        fontSize: 14,
         paddingLeft: 10,
     },
     stockValue:{
