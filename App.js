@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View, TextInput, SafeAreaView, ScrollView, Tou
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
+import { HistoryOutlined } from '@ant-design/icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 import { SearchBar } from 'react-native-elements';
@@ -91,7 +92,7 @@ function Portfolio({ navigation }){
             </View>
             <View style={styles.overviewContainer} >
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.push('Transaction History')}>
-                    <Text style={styles.touchableLabel}>Transaction History</Text>
+                    <HistoryOutlined style={{ fontSize: '24px', color: 'white' }}/>
                 </TouchableOpacity>
             </View>
             </Header>
