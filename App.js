@@ -82,7 +82,7 @@ function GetStocks({ navigation }) {
 
 function Portfolio({ navigation }){
     return (
-        <View style={styles.rowContainer} >
+            <Header  containerStyle={styles.header}>
             <View style={styles.overviewContainer} >
                 <Text style={styles.date} >xx.xx.xxxx</Text>
             </View>
@@ -94,7 +94,7 @@ function Portfolio({ navigation }){
                     <Text style={styles.touchableLabel}>Transaction History</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+            </Header>
     )
 }
 
@@ -217,10 +217,10 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         height: 50,
         justifyContent: "center",
-        backgroundColor: '#004d43',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: "#018c7a",
+    },
+    header:{
+        height: 65,
+        backgroundColor: '#393e42'
     },
     rowContainer:{
         flex: 1,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     },
     touchableLabel:{
         textAlign: 'center',
-        color: "white",
+        color: '#018c7a',
         fontSize: 18,
     },
     overviewContainer:{
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     },
     portfolioValue: {
         fontSize: 18,
-        color: 'black',
+        color: 'white',
         textAlign:'center',
 
     },
@@ -283,8 +283,7 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: 18,
-        color: 'black',
+        color: 'white',
         textAlign:'left',
-
     },
 });
