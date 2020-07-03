@@ -18,26 +18,50 @@ function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
     navigation.setOptions({headerTitle: stockName})
-    console.log(route.params)
     return(
         <View style={styles.containerDark}>
-
+            {/* <Button
+                title= "Go back"
+                onPress={() =>
+                    navigation.pop()
+                }
+            /> */}
             <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
             <Text style={styles.stockName}>{ stockName }</Text>
         </View>
-        
     );
+}
+
+async function retrieveStocks() {
+    let gotStocks;
+    gotStocks = await fetch('http://localhost:5000/stocks/getall', {
+        method: 'GET',
+    }).then(response => {
+        if (response.ok) {
+            return response.json()
+        }
+        else {
+            throw new Error('Server response wasn\'t OK');
+        }
+    }).then(data => {
+        gotStocks = data
+        return data
+    })
+    return gotStocks
 }
 
 function GetStocks({ navigation }) {
     // REPLACE THIS CODE WITH GETTING FROM DB
+
     const stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
     const stockAbbrevs = ['BANA', 'GD', 'CNS', 'VSTA', 'KENT', 'HALL', 'HYRU', 'BSEC', 'SEO', 'FRNT', 'PTRI', 'OGH', 'BE', 'APH', 'ADEN', 'CMPS', 'EXAN', 'HOME', 'IMPC', 'ICAL', 'GG', 'BFS', 'UPSC', 'MAIN', 'SB', 'AT', 'STGR', 'RMCO', 'RDS', 'ALIN', 'COVE', 'BLOL', 'EVRG', 'ALPN', 'LDN', 'NYO', 'ENTT', 'CHG', 'CAM', 'GRS', 'CCTS', 'CPLN', 'LYNX', 'CHRG', 'LB', 'WG', 'STWT', 'EXBV', 'DINK', 'PKSI']
-    const stocks = []
-    let i;
-    for (i = 0; i < 50; i++) {
-        const name = stockNames[i];
-        const abbrev = stockAbbrevs[i];
+    let gotStocks = retrieveStocks()
+    gotStocks.then(stocks => {
+        let i
+        for (i = 0; i < 50; i++) {
+        const name = gotStocks[i];
+        const abbrev = gotStocks[i];
+        console.log(stocks[i])
         const tempStock = (
             <TouchableOpacity
                 key={i}
@@ -51,8 +75,8 @@ function GetStocks({ navigation }) {
             >
                 <View style={styles.rowContainer}>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockAbbrev}>{stockAbbrevs[i]}</Text>
-                        <Text style={styles.stockName}>{stockNames[i]}</Text>
+                        <Text style={styles.stockAbbrev}>{stocks[i]}</Text>
+                        <Text style={styles.stockName}>{stocks[i].name}</Text>
                     </View>
                     <View style={styles.stockNameContainer}>
                         <Text style={styles.stockValue}>{Math.floor(Math.random() * 100)}</Text>
@@ -63,13 +87,12 @@ function GetStocks({ navigation }) {
         );
         stocks[i] = (tempStock);
     }
-    const search = App.getSearch()
+    })
+    // fucked
     return (
         <View style={styles.stockscontainer}>
             <SearchBar
                 placeholder="Type Here..."
-                onChangeText={App.updateSearch}
-                value={search}
             />
             <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
                 {stocks}
@@ -111,21 +134,8 @@ function TransactionHistory({ navigation }) {
 }
 export default class App extends Component {
 
-    state = {
-        search: '',
-    };
-
-    static updateSearch = (search) => {
-        this.setState({ search });
-        console.log(state.search)
-    };
-
-    static getSearch() {
-        return (this.state)
-    }
 
     Stocks() { //Stocks tab
-
         return (
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={GetStocks} options={{ //Home stack shows the stocks list
@@ -151,7 +161,6 @@ export default class App extends Component {
     }
 
     Overview() { //Overview tab
-
         return (
             <Stack.Navigator>
                 <Stack.Screen name="Overview" component={Portfolio} options = {{
@@ -165,9 +174,6 @@ export default class App extends Component {
     }
 
     render() {
-
-        const search = this.state
-        
         return (
             <NavigationContainer>
                 <StatusBar hidden />
