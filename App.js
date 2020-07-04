@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
+    const { stockPrice } = route.params;
     navigation.setOptions({headerTitle: stockName})
     return(
         <View style={styles.containerDark}>
@@ -29,6 +30,7 @@ function Stock({ route, navigation }) {
             /> */}
             <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
             <Text style={styles.stockName}>{ stockName }</Text>
+            <Text style={styles.stockName}>{ stockPrice }</Text>
         </View>
     );
 }
@@ -39,9 +41,11 @@ class StockListing extends React.Component {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    this.props.navigation.push('Stock', {
+                    console.log(this.props.navigation)
+                    this.props.navigation.navigation.push('Stock', {
                         stockName: this.props.name,
                         stockAbbrev: this.props.abbrev,
+                        stockPrice: this.props.value
                     });
                 }}>
                 <View style={styles.rowContainer}>
@@ -63,9 +67,14 @@ class FetchStocks extends React.Component {
     constructor(props){
         super(props);
         this.state ={ isLoading: true}
+        setInterval(this.fetchStockListings, 3000);
     }
     componentDidMount(){
-        return fetch('http://localhost:5000/stocks/getall')
+        this.fetchStockListings()
+    }
+
+    fetchStockListings = () => {
+        fetch('http://192.168.1.24:5000/stocks/getall')
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
@@ -78,7 +87,8 @@ class FetchStocks extends React.Component {
             .catch((error) =>{
                 console.error(error);
             });
-    }
+    };
+
     render(){
         if(this.state.isLoading){
             return(
@@ -87,8 +97,14 @@ class FetchStocks extends React.Component {
                 </View>
             )
         }
+        const search = App.getSearch()
         return(
             <View style={{flex: 1, paddingTop:20}}>
+                <SearchBar
+                    placeholder="Type Here..."
+                    onChangeText={App.updateSearch}
+                    value={search}
+                />
                 <FlatList
                     data={this.state.dataSource}
                     renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} navigation={this.props.navigation}/>}
@@ -99,9 +115,10 @@ class FetchStocks extends React.Component {
     }
 }
 
-function GetStocks ({navigation}) {
+
+function GetStocks (navigation) {
     return (
-        <FetchStocks navigation={{navigation}}/>
+        <FetchStocks navigation={navigation}/>
     )
 }
 
@@ -113,7 +130,7 @@ function Portfolio({ navigation }){
 
     today = mm + '.' + dd + '.' + yyyy;
     return (
-            <Header  containerStyle={styles.header}>
+        <Header  containerStyle={styles.header}>
             <View style={styles.overviewContainer} >
                 <Text style={styles.date} >{ today }</Text>
             </View>
@@ -125,7 +142,7 @@ function Portfolio({ navigation }){
                     <MaterialIcons name="history" size={24} color="white"/>
                 </TouchableOpacity>
             </View>
-            </Header>
+        </Header>
     )
 }
 
@@ -138,6 +155,18 @@ function TransactionHistory({ navigation }) {
 }
 export default class App extends Component {
 
+    state = {
+        search: '',
+    };
+
+    updateSearch = (search) => {
+        this.setState({ search });
+        console.log(state.search)
+    };
+
+    static getSearch() {
+        return (this.state)
+    }
 
     Stocks() { //Stocks tab
         return (
@@ -243,7 +272,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#018c7a",
-        },
+    },
     buttonSmall:{
         alignSelf: "stretch",
         height: 50,
