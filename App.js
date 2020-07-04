@@ -39,7 +39,7 @@ class StockListing extends React.Component {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    navigation.push('Stock', {
+                    this.props.navigation.push('Stock', {
                         stockName: this.props.name,
                         stockAbbrev: this.props.abbrev,
                     });
@@ -91,7 +91,7 @@ class FetchStocks extends React.Component {
             <View style={{flex: 1, paddingTop:20}}>
                 <FlatList
                     data={this.state.dataSource}
-                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value}/>}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
                 />
             </View>
@@ -101,7 +101,7 @@ class FetchStocks extends React.Component {
 
 function GetStocks ({navigation}) {
     return (
-        <FetchStocks/>
+        <FetchStocks navigation={{navigation}}/>
     )
 }
 
