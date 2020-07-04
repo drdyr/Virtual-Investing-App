@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
+import { FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
 
@@ -32,73 +33,76 @@ function Stock({ route, navigation }) {
     );
 }
 
-async function retrieveStocks() {
-    let gotStocks;
-    gotStocks = await fetch('http://localhost:5000/stocks/getall', {
-        method: 'GET',
-    }).then(response => {
-        if (response.ok) {
-            return response.json()
-        }
-        else {
-            throw new Error('Server response wasn\'t OK');
-        }
-    }).then(data => {
-        gotStocks = data
-        return data
-    })
-    return gotStocks
-}
-
-function GetStocks({ navigation }) {
-    // REPLACE THIS CODE WITH GETTING FROM DB
-
-    const stockNames = ["Banana ", "General Developments", "Citizen & Sons", "Vista plc", "Kent ", "Hall plc", "Hayre Utilities", "Butler Securities", "Southeast Oil", "Frontier Insurance", "Petroleum International", "Oil & Gas Holdings", "British Electric", "Anglo Pharmaceuticals", "Admiral Entertainment", "Compass ", "Expert Analytics", "Home Financial", "Imperial Cruiseline", "Intercontinental Airlines", "Global Gas", "BFS Foods", "Upward of Scotland", "Michaelangelo International", "Scott-Barnard plc", "Albert Technologies", "Standard Group", "Remco plc", "RDS Airlines", "Alliance International", "Cove  ", "BLL  ", "Evergreen Royal", "Alpine  ", "LDN Commerce", "New York Oil", "Enterprise Tobacco", "Churchill Hotels Group", "Cameron Industries", "Greyrock Servers", "Cactus ", "Caplin  ", "Lynx Group", "Charger ", "Lavalo & Barker", "Wroting Group", "Stout ", "Executive  Beverages", "Crandink Group", "Parkinson International"]
-    const stockAbbrevs = ['BANA', 'GD', 'CNS', 'VSTA', 'KENT', 'HALL', 'HYRU', 'BSEC', 'SEO', 'FRNT', 'PTRI', 'OGH', 'BE', 'APH', 'ADEN', 'CMPS', 'EXAN', 'HOME', 'IMPC', 'ICAL', 'GG', 'BFS', 'UPSC', 'MAIN', 'SB', 'AT', 'STGR', 'RMCO', 'RDS', 'ALIN', 'COVE', 'BLOL', 'EVRG', 'ALPN', 'LDN', 'NYO', 'ENTT', 'CHG', 'CAM', 'GRS', 'CCTS', 'CPLN', 'LYNX', 'CHRG', 'LB', 'WG', 'STWT', 'EXBV', 'DINK', 'PKSI']
-    let gotStocks = retrieveStocks()
-    gotStocks.then(stocks => {
-        let i
-        for (i = 0; i < 50; i++) {
-        const name = gotStocks[i];
-        const abbrev = gotStocks[i];
-        console.log(stocks[i])
-        const tempStock = (
+class StockListing extends React.Component {
+    render () {
+        return (
             <TouchableOpacity
-                key={i}
                 style={styles.button}
                 onPress={() => {
                     navigation.push('Stock', {
-                        stockName: name,
-                        stockAbbrev: abbrev,
+                        stockName: this.props.name,
+                        stockAbbrev: this.props.abbrev,
                     });
-                }}
-            >
+                }}>
                 <View style={styles.rowContainer}>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockAbbrev}>{stocks[i]}</Text>
-                        <Text style={styles.stockName}>{stocks[i].name}</Text>
+                        <Text style={styles.stockAbbrev}>{this.props.abbrev}</Text>
+                        <Text style={styles.stockName}>{this.props.name}</Text>
                     </View>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockValue}>{Math.floor(Math.random() * 100)}</Text>
+                        <Text style={styles.stockValue}>{this.props.value}</Text>
                         <Text style={styles.stockChange}>▲ {Math.floor(Math.random() * 10)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
-        stocks[i] = (tempStock);
     }
-    })
-    // fucked
+}
+
+class FetchStocks extends React.Component {
+    constructor(props){
+        super(props);
+        this.state ={ isLoading: true}
+    }
+    componentDidMount(){
+        return fetch('http://localhost:5000/stocks/getall')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                this.setState({
+                    isLoading: false,
+                    dataSource: responseJson,
+                }, function(){
+                });
+            })
+            .catch((error) =>{
+                console.error(error);
+            });
+    }
+    render(){
+        if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, padding: 20}}>
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
+        return(
+            <View style={{flex: 1, paddingTop:20}}>
+                <FlatList
+                    data={this.state.dataSource}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value}/>}
+                    keyExtractor={({postID}) => postID}
+                />
+            </View>
+        );
+    }
+}
+
+function GetStocks ({navigation}) {
     return (
-        <View style={styles.stockscontainer}>
-            <SearchBar
-                placeholder="Type Here..."
-            />
-            <ScrollView style={styles.scrollView} alwaysBounceVertical={true} showsVerticalScrollIndicator={false}>
-                {stocks}
-            </ScrollView>
-        </View>
-    );
+        <FetchStocks/>
+    )
 }
 
 function Portfolio({ navigation }){
