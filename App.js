@@ -98,7 +98,7 @@ class FetchStocks extends React.Component {
     }
 
     fetchStockListings = () => {
-        fetch('http://192.168.1.24:5000/stocks/getall')
+        fetch('http://localhost:5000/stocks/getall')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -150,7 +150,7 @@ class FetchStocks extends React.Component {
                 />
                 <FlatList
                     data={this.state.searchedStocks}
-                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} navigation={this.props.navigation}/>}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
                 />
             </View>
