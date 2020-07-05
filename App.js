@@ -22,11 +22,21 @@ const user = {
 }
 
 function Stock({ route, navigation }) {
+    const [buyCount, setCount] = useState(0);
+
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
     const { stockPrice } = route.params;
     const { priceChange } = route.params;
 
+    function decreaseCount () {
+        if (buyCount !== 0) {
+            setCount(buyCount - 1)
+        }
+    }
+    function increaseCount () {
+        setCount(buyCount + 1)
+    }
     navigation.setOptions({headerTitle: stockName})
     console.log(route.params)
     return(
@@ -36,6 +46,14 @@ function Stock({ route, navigation }) {
             <Text style={styles.stockName}>{ stockName }</Text>
             <Text style={styles.stockName}>{ stockPrice }</Text>
             <Text style={styles.stockName}>{ priceChange }</Text>
+
+            <TouchableOpacity style={styles.stockButton} onPress={() => {increaseCount()}}>
+                <MaterialIcons name="add" size={100} color='white'/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.stockButton} onPress={() => {decreaseCount()}}>
+                <MaterialIcons name="remove" size={100} color='white'/>
+            </TouchableOpacity>
+            <Text style={styles.stockName}> {buyCount} </Text>
 
         </View>
     );
@@ -97,7 +115,7 @@ class FetchStocks extends React.Component {
     constructor(props){
         super(props);
         this.state ={ isLoading: true, searchTerm: ""}
-        setInterval(this.fetchStockListings, 3000);
+        setInterval(this.fetchStockListings, 60000);
     }
     componentDidMount(){
         this.fetchStockListings()
@@ -150,7 +168,10 @@ class FetchStocks extends React.Component {
         return(
             <View style={{flex: 1}}>
                 <SearchBar
-                    placeholder="Type Here..."
+                    round={true}
+
+                    searchIcon={null}
+                    placeholder="Search"
                     onChangeText={text => this.updateSearchTerm(text)}
                     value={this.state.searchTerm}
                 />
@@ -213,7 +234,9 @@ class Registration extends React.Component {
                     styles={styles.button}
                     text={"test"}
                     onPress={this.handleSubmit}
-                />
+                >
+                    <Text>Press to Submit</Text>
+                </TouchableOpacity>
             </View>);
     }
 
@@ -469,11 +492,11 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign:'left',
     },
-    redText: {
-        color:'red',
-    },
-    greenText: {
-        color:'green',
+    stockButton: {
+        backgroundColor: '#393e42',
+
+        height: 100,
+        width: 100,
 
     },
 });
