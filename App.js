@@ -136,13 +136,13 @@ class FetchStocks extends React.Component {
     render(){
         if(this.state.isLoading){
             return(
-                <View style={{flex: 1, padding: 20}}>
+                <View style={{flex: 1}}>
                     <ActivityIndicator/>
                 </View>
             )
         }
         return(
-            <View style={{flex: 1, paddingTop:20}}>
+            <View style={{flex: 1}}>
                 <SearchBar
                     placeholder="Type Here..."
                     onChangeText={text => this.updateSearchTerm(text)}
