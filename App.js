@@ -19,6 +19,8 @@ function Stock({ route, navigation }) {
     const { stockName } = route.params;
     const { stockAbbrev } = route.params;
     const { stockPrice } = route.params;
+    const { priceChange } = route.params;
+
     navigation.setOptions({headerTitle: stockName})
     return(
         <View style={styles.containerDark}>
@@ -31,21 +33,46 @@ function Stock({ route, navigation }) {
             <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
             <Text style={styles.stockName}>{ stockName }</Text>
             <Text style={styles.stockName}>{ stockPrice }</Text>
+            <Text style={styles.stockName}>{ priceChange }</Text>
+
         </View>
     );
 }
 
 class StockListing extends React.Component {
+
+    determineStockValueStyle () {
+        if (this.props.change < 0) {
+            return styles.stockValueRed
+        } else {
+            return styles.stockValueGreen
+        }
+    }
+
+    determineStockChangeStyle () {
+        if (this.props.change < 0) {
+            return styles.stockChangeRed
+        } else {
+            return styles.stockChangeGreen
+        }
+    }
+    determineArrow () {
+        if (this.props.change < 0) {
+            return '▼'
+        } else {
+            return '▲'
+        }
+    }
     render () {
         return (
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    console.log(this.props.navigation)
                     this.props.navigation.navigation.push('Stock', {
                         stockName: this.props.name,
                         stockAbbrev: this.props.abbrev,
-                        stockPrice: this.props.value
+                        stockPrice: this.props.value,
+                        priceChange:this.props.change,
                     });
                 }}>
                 <View style={styles.rowContainer}>
@@ -54,8 +81,8 @@ class StockListing extends React.Component {
                         <Text style={styles.stockName}>{this.props.name}</Text>
                     </View>
                     <View style={styles.stockNameContainer}>
-                        <Text style={styles.stockValue}>{this.props.value}</Text>
-                        <Text style={styles.stockChange}>▲ {Math.floor(Math.random() * 10)}</Text>
+                        <Text style={this.determineStockValueStyle()}>{this.props.value}</Text>
+                        <Text style={this.determineStockChangeStyle()}>{this.determineArrow()} {this.props.change}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -74,7 +101,7 @@ class FetchStocks extends React.Component {
     }
 
     fetchStockListings = () => {
-        fetch('http://192.168.1.24:5000/stocks/getall')
+        fetch('http://localhost:5000/stocks/getall')
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
@@ -107,7 +134,7 @@ class FetchStocks extends React.Component {
                 />
                 <FlatList
                     data={this.state.dataSource}
-                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} navigation={this.props.navigation}/>}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
                 />
             </View>
@@ -310,17 +337,29 @@ const styles = StyleSheet.create({
         fontSize: 14,
         paddingLeft: 10,
     },
-    stockValue:{
+    stockValueRed:{
         textAlign: 'right',
-        color: "#09ab00",
         fontSize: 48,
         paddingRight: 10,
+        color: 'red',
     },
-    stockChange:{
+    stockValueGreen:{
         textAlign: 'right',
-        color: "#09ab00",
+        fontSize: 48,
+        paddingRight: 10,
+        color: 'green',
+    },
+    stockChangeRed:{
+        textAlign: 'right',
         fontSize: 16,
         paddingRight: 10,
+        color: 'red',
+    },
+    stockChangeGreen:{
+        textAlign: 'right',
+        fontSize: 16,
+        paddingRight: 10,
+        color: 'green',
     },
     touchableLabel:{
         textAlign: 'center',
@@ -349,5 +388,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
         textAlign:'left',
+    },
+    redText: {
+        color:'red',
+    },
+    greenText: {
+        color:'green',
+
     },
 });
