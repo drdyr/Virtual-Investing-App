@@ -14,6 +14,12 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const user = {
+    username: "",
+    email: "",
+    pass: "",
+    cpass: "",
+}
 
 function Stock({ route, navigation }) {
     const { stockName } = route.params;
@@ -165,6 +171,54 @@ function GetStocks (navigation) {
     )
 }
 
+class Registration extends React.Component {
+    handleSubmit = () => {
+        // do the things
+    }
+    render() {
+        return(
+            <View style={styles.formContainer}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Username</Text>
+                    <TextInput
+                        value={user.username}
+                        style={styles.textInput}
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Email</Text>
+                    <TextInput
+                    value={user.email}
+                    style={styles.textInput}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Password</Text>
+                    <TextInput
+                        value={user.pass}
+                        style={styles.textInput}
+                        secureTextEntry={true}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Confirm Password</Text>
+                    <TextInput
+                        value={user.cpass}
+                        style={styles.textInput}
+                        secureTextEntry={true}
+                    />
+                </View>
+                <TouchableOpacity
+                    styles={styles.button}
+                    text={"test"}
+                    onPress={this.handleSubmit}
+                />
+            </View>);
+    }
+
+}
+
 function Portfolio({ navigation }){
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -217,9 +271,11 @@ export default class App extends Component {
 
     SettingsScreen() { //Settings tab
         return (
-            <View
-
-            />
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={Registration} options={{ //Home stack shows the stocks list
+                    headerShown: false,
+                }} />
+            </Stack.Navigator>
         );
     }
 
@@ -290,9 +346,24 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: 'center',},
-    stockscontainer: {
+    stocksContainer: {
         flex: 1,
         justifyContent: 'center',
+    },
+    formContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
+        marginHorizontal: 'auto',
+        width: '50%',
+    },
+    inputContainer: {
+        margin: 5,
+    },
+    inputLabel: {
+        fontSize: 16,
+        fontWeight: '500',
     },
     button:{
         alignSelf: "stretch",
@@ -363,6 +434,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingRight: 10,
         color: 'green',
+    },
+    textInput:{
+        fontSize: 16,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'black',
     },
     touchableLabel:{
         textAlign: 'center',
