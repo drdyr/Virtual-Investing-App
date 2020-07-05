@@ -22,14 +22,10 @@ function Stock({ route, navigation }) {
     const { priceChange } = route.params;
 
     navigation.setOptions({headerTitle: stockName})
+    console.log(route.params)
     return(
         <View style={styles.containerDark}>
-            {/* <Button
-                title= "Go back"
-                onPress={() =>
-                    navigation.pop()
-                }
-            /> */}
+
             <Text style={styles.stockAbbrev}>{ stockAbbrev }</Text>
             <Text style={styles.stockName}>{ stockName }</Text>
             <Text style={styles.stockName}>{ stockPrice }</Text>
@@ -74,7 +70,8 @@ class StockListing extends React.Component {
                         stockPrice: this.props.value,
                         priceChange:this.props.change,
                     });
-                }}>
+                }}
+            >
                 <View style={styles.rowContainer}>
                     <View style={styles.stockNameContainer}>
                         <Text style={styles.stockAbbrev}>{this.props.abbrev}</Text>
@@ -93,7 +90,7 @@ class StockListing extends React.Component {
 class FetchStocks extends React.Component {
     constructor(props){
         super(props);
-        this.state ={ isLoading: true}
+        this.state ={ isLoading: true, searchTerm: ""}
         setInterval(this.fetchStockListings, 3000);
     }
     componentDidMount(){
@@ -101,19 +98,39 @@ class FetchStocks extends React.Component {
     }
 
     fetchStockListings = () => {
-        fetch('http://localhost:5000/stocks/getall')
+        fetch('http://192.168.1.24:5000/stocks/getall')
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 this.setState({
                     isLoading: false,
                     dataSource: responseJson,
                 }, function(){
                 });
+                this.filterArray(this.state.searchTerm)
             })
             .catch((error) =>{
                 console.error(error);
             });
+    };
+
+    filterArray = (text) => {
+        const search = text
+        const searchedStocks = [];
+        for (const key in this.state.dataSource) {
+            if (this.state.dataSource.hasOwnProperty(key)) {
+                if (this.state.dataSource[key].name.toLowerCase().includes(search.toLowerCase())) {
+                    searchedStocks.push(this.state.dataSource[key])
+                }
+            }
+        }
+        this.setState({searchedStocks: searchedStocks})
+    }
+
+    updateSearchTerm = (text) => {
+        this.setState({
+            searchTerm: text,
+        })
+        this.filterArray(text)
     };
 
     render(){
@@ -124,17 +141,16 @@ class FetchStocks extends React.Component {
                 </View>
             )
         }
-        const search = App.getSearch()
         return(
             <View style={{flex: 1, paddingTop:20}}>
                 <SearchBar
                     placeholder="Type Here..."
-                    onChangeText={App.updateSearch}
-                    value={search}
+                    onChangeText={text => this.updateSearchTerm(text)}
+                    value={this.state.searchTerm}
                 />
                 <FlatList
-                    data={this.state.dataSource}
-                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} navigation={this.props.navigation}/>}
+                    data={this.state.searchedStocks}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
                 />
             </View>
@@ -181,19 +197,6 @@ function TransactionHistory({ navigation }) {
     )
 }
 export default class App extends Component {
-
-    state = {
-        search: '',
-    };
-
-    updateSearch = (search) => {
-        this.setState({ search });
-        console.log(state.search)
-    };
-
-    static getSearch() {
-        return (this.state)
-    }
 
     Stocks() { //Stocks tab
         return (
