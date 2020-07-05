@@ -14,12 +14,6 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-const user = {
-    username: "",
-    email: "",
-    pass: "",
-    cpass: "",
-}
 
 function Stock({ route, navigation }) {
     const [buyCount, setCount] = useState(0);
@@ -193,7 +187,24 @@ function GetStocks (navigation) {
 }
 
 class Registration extends React.Component {
+    constructor(props){
+        super(props);
+        this.state ={ username: "", email: "", password: "", cpass: ""}
+    }
+
     handleSubmit = () => {
+        fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password
+            }),
+        });
         // do the things
     }
     render() {
@@ -202,31 +213,35 @@ class Registration extends React.Component {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Username</Text>
                     <TextInput
-                        value={user.username}
+                        value={this.state.username}
                         style={styles.textInput}
+                        onChangeText={text => this.setState({username: text})}
                     />
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Email</Text>
                     <TextInput
-                    value={user.email}
-                    style={styles.textInput}
+                        value={this.state.email}
+                        style={styles.textInput}
+                        onChangeText={text => this.setState({email: text})}
                     />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Password</Text>
                     <TextInput
-                        value={user.pass}
+                        value={this.state.password}
                         style={styles.textInput}
+                        onChangeText={text => this.setState({password: text})}
                         secureTextEntry={true}
                     />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Confirm Password</Text>
                     <TextInput
-                        value={user.cpass}
+                        value={this.state.cpass}
                         style={styles.textInput}
+                        onChangeText={text => this.setState({cpass: text})}
                         secureTextEntry={true}
                     />
                 </View>
