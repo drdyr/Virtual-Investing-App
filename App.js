@@ -6,9 +6,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Header, Button } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { FlatList, ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
+
 
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
@@ -189,22 +190,47 @@ function GetStocks (navigation) {
 class Registration extends React.Component {
     constructor(props){
         super(props);
-        this.state ={ username: "", email: "", password: "", cpass: ""}
+        this.state ={ username: "", email: "", password: "", cpass: "", popup: false,}
     }
 
+    passwordPopup = () => {
+
+    }
+
+    validPassword = () => { // add more criteria, e.g. min char length, symbol requirement, etc
+        return this.state.password === this.state.cpass && this.state.password !== '';
+    }
+    togglePopup = () => {
+        this.setState({
+            popup: !this.state.popup
+        })
+    }
     handleSubmit = () => {
-        fetch('http://localhost:5000/register', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password
-            }),
-        });
+        if (this.validPassword()) {
+            fetch('http://localhost:5000/register', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    email: this.state.email,
+                    password: this.state.password
+                }),
+            });
+        } else {
+            console.log('blol');
+            Alert.alert('blol', 'blol')
+
+
+
+            //fucked
+
+
+        }
+
+
         // do the things
     }
     render() {
@@ -254,6 +280,7 @@ class Registration extends React.Component {
                 </TouchableOpacity>
             </View>);
     }
+
 
 }
 
