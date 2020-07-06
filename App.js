@@ -9,6 +9,7 @@ import * as SQLite from 'expo-sqlite';
 import { FlatList, ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
+import { sha256 } from 'js-sha256';
 
 
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
@@ -155,7 +156,7 @@ class FetchStocks extends React.Component {
     render(){
         if(this.state.isLoading){
             return(
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, marginTop: 10}}>
                     <ActivityIndicator/>
                 </View>
             )
@@ -187,7 +188,21 @@ function GetStocks (navigation) {
     )
 }
 
+const invalidPasswordAlert = () =>
+    Alert.alert(
+        "Alert",
+        "Invalid Password",
+        [
+            {
+                text: "Ok",
+                onPress: () => console.log("Ask me later pressed")
+            },
+        ],
+        { cancelable: false }
+    );
+
 class Registration extends React.Component {
+
     constructor(props){
         super(props);
         this.state ={ username: "", email: "", password: "", cpass: ""}
@@ -209,16 +224,12 @@ class Registration extends React.Component {
                 body: JSON.stringify({
                     username: this.state.username,
                     email: this.state.email,
-                    password: this.state.password
+                    password: sha256(this.state.password)
                 }),
             });
         } else {
+            invalidPasswordAlert()
             console.log('blol');
-            Alert.alert('blol', 'blol')
-
-
-
-            //fucked
 
 
         }
