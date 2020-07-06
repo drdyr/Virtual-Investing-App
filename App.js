@@ -10,6 +10,7 @@ import { FlatList, ActivityIndicator, Alert, TouchableHighlight } from 'react-na
 import { SearchBar } from 'react-native-elements';
 import {createStackNavigator} from "@react-navigation/stack";
 import { sha256 } from 'js-sha256';
+import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
 
 
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
@@ -431,7 +432,7 @@ export default class App extends Component {
 
     LoginToApp() {
         return (
-            <NavigationContainer>
+            <NavigationContainer independent={true}>
                 <Stack.Navigator initialRouteName="Login">
                     <Stack.Screen name="Register" component={RegistrationScreen} options={{
 
@@ -460,7 +461,7 @@ export default class App extends Component {
 
     MainApp() {
         return (
-            <NavigationContainer>
+            <NavigationContainer independent={true}>
                 <StatusBar hidden />
                 <Tab.Navigator
                     initialRouteName={ 'Overview' }
@@ -506,9 +507,20 @@ export default class App extends Component {
     }
     render() {
         return (
-            this.LoginToApp()
+            <NavigationContainer >
+                <Stack.Navigator initialRouteName={'Login'}>
+                    <Stack.Screen name='Login' component={this.LoginToApp} options={{
 
-        )
+                        headerShown: false,
+                    }}/>
+                    <Stack.Screen name='MainApp' component={this.MainApp} options={{
+
+                        headerShown: false,
+                    }}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+
+        );
 
 
     }
