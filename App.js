@@ -190,21 +190,14 @@ function GetStocks (navigation) {
 class Registration extends React.Component {
     constructor(props){
         super(props);
-        this.state ={ username: "", email: "", password: "", cpass: "", popup: false,}
-    }
-
-    passwordPopup = () => {
-
+        this.state ={ username: "", email: "", password: "", cpass: ""}
     }
 
     validPassword = () => { // add more criteria, e.g. min char length, symbol requirement, etc
         return this.state.password === this.state.cpass && this.state.password !== '';
     }
-    togglePopup = () => {
-        this.setState({
-            popup: !this.state.popup
-        })
-    }
+
+
     handleSubmit = () => {
         if (this.validPassword()) {
             fetch('http://localhost:5000/register', {
