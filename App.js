@@ -201,6 +201,64 @@ const invalidPasswordAlert = () =>
         { cancelable: false }
     );
 
+class Login extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state ={ username: "", password: ""}
+    }
+
+    handleSubmit = () => {
+        fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: sha256(this.state.password)
+            }),
+        });
+    }
+    render() {
+        return(
+            <View style={styles.formContainer}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Username or Email Address</Text>
+                    <TextInput
+                        value={this.state.username}
+                        style={styles.textInput}
+                        onChangeText={text => this.setState({username: text})}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Password</Text>
+                    <TextInput
+                        value={this.state.password}
+                        style={styles.textInput}
+                        onChangeText={text => this.setState({password: text})}
+                        secureTextEntry={true}
+                    />
+                </View>
+                <TouchableOpacity
+                    styles={styles.button}
+                    onPress={this.handleSubmit}
+                >
+                    <Text>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    styles={styles.button}
+                    onPress={() => {this.props.navigation.push('Register')}}
+                >
+                    <Text>Register</Text>
+                </TouchableOpacity>
+            </View>);
+    }
+
+
+}
+
 class Registration extends React.Component {
 
     constructor(props){
@@ -282,6 +340,13 @@ class Registration extends React.Component {
                 >
                     <Text>Press to Submit</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    styles={styles.button}
+                    text={"test"}
+                    onPress={this.props.navigation.push('Login')}
+                >
+                    <Text>Login</Text>
+                </TouchableOpacity>
             </View>);
     }
 
@@ -340,8 +405,12 @@ export default class App extends Component {
 
     SettingsScreen() { //Settings tab
         return (
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={Registration} options={{ //Home stack shows the stocks list
+            <Stack.Navigator initialRouteName="Register">
+                <Stack.Screen name="Register" component={Registration} options={{
+
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Login" component={Login} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
