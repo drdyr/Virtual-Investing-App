@@ -249,7 +249,11 @@ class Login extends React.Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                     styles={styles.button}
-                    onPress={() => {this.props.navigation.push('Register')}}
+                    onPress={() => {
+                        this.props.navigation.navigation.push('Register');
+                    }}
+
+
                 >
                     <Text>Register</Text>
                 </TouchableOpacity>
@@ -273,6 +277,7 @@ class Registration extends React.Component {
 
     handleSubmit = () => {
         if (this.validPassword()) {
+
             fetch('http://localhost:5000/register', {
                 method: 'POST',
                 headers: {
@@ -343,7 +348,9 @@ class Registration extends React.Component {
                 <TouchableOpacity
                     styles={styles.button}
                     text={"test"}
-                    onPress={this.props.navigation.push('Login')}
+                    onPress={() => {
+                        this.props.navigation.navigation.push('Login');
+                    }}
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
@@ -352,6 +359,17 @@ class Registration extends React.Component {
 
 
 }
+function LoginScreen (navigation) {
+    return (
+        <Login navigation={navigation}/>
+    )
+}
+function RegistrationScreen (navigation) {
+    return (
+        <Registration navigation={navigation}/>
+    )
+}
+
 
 function Portfolio({ navigation }){
     let today = new Date();
@@ -405,12 +423,12 @@ export default class App extends Component {
 
     SettingsScreen() { //Settings tab
         return (
-            <Stack.Navigator initialRouteName="Register">
-                <Stack.Screen name="Register" component={Registration} options={{
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen name="Register" component={RegistrationScreen} options={{
 
                     headerShown: false,
                 }} />
-                <Stack.Screen name="Login" component={Login} options={{
+                <Stack.Screen name="Login" component={LoginScreen} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
