@@ -423,18 +423,28 @@ export default class App extends Component {
 
     SettingsScreen() { //Settings tab
         return (
-            <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen name="Register" component={RegistrationScreen} options={{
+            <View>
 
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="Login" component={LoginScreen} options={{
-                    headerShown: false,
-                }} />
-            </Stack.Navigator>
-        );
+            </View>
+        )
     }
 
+    LoginToApp() {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="Login">
+                    <Stack.Screen name="Register" component={RegistrationScreen} options={{
+
+                        headerShown: false,
+                    }} />
+                    <Stack.Screen name="Login" component={LoginScreen} options={{
+                        headerShown: false,
+                    }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+
+        );
+    }
     Overview() { //Overview tab
         return (
             <Stack.Navigator>
@@ -448,7 +458,7 @@ export default class App extends Component {
         );
     }
 
-    render() {
+    MainApp() {
         return (
             <NavigationContainer>
                 <StatusBar hidden />
@@ -493,6 +503,13 @@ export default class App extends Component {
                     />
                 </Tab.Navigator>
             </NavigationContainer>);
+    }
+    render() {
+        return (
+            this.LoginToApp()
+
+        )
+
 
     }
 }
