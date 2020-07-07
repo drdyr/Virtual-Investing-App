@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import {SearchBar} from "react-native-elements";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createStackNavigator} from "@react-navigation/stack";
+
+
+const Stack = createStackNavigator();
 
 class StockListing extends React.Component {
 
@@ -129,7 +134,7 @@ class FetchStocks extends React.Component {
     }
 }
 
-export function Stock({ route, navigation }) {
+function Stock({ route, navigation }) {
     const [buyCount, setCount] = useState(0);
 
     const { stockName } = route.params;
@@ -167,10 +172,28 @@ export function Stock({ route, navigation }) {
     );
 }
 
-export function GetStocks (navigation) {
+function GetStocks (navigation) {
     return (
         <FetchStocks navigation={navigation}/>
     )
+}
+
+export function Stocks() { //Stocks tab
+    return (
+
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={GetStocks} options={{ //Home stack shows the stocks list
+                headerShown: false,
+            }} />
+            <Stack.Screen name="Stock" component={Stock} options={{ //Each stock has a page that goes on top of the stack
+                headerTitle: '',
+                headerStyle: {
+                    backgroundColor: '#393e42',
+                },
+                headerTintColor: 'white',
+            }} />
+        </Stack.Navigator>
+    );
 }
 
 const styles = StyleSheet.create({

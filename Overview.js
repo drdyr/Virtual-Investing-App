@@ -2,8 +2,11 @@ import React from 'react';
 import {Header} from "react-native-elements";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
+import {createStackNavigator} from "@react-navigation/stack";
 
-export function Portfolio({ navigation }){
+const Stack = createStackNavigator();
+
+function Portfolio({ navigation }){
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -27,12 +30,25 @@ export function Portfolio({ navigation }){
     )
 }
 
-export function TransactionHistory({ navigation }) {
+function TransactionHistory({ navigation }) {
     return (
         <View>
 
         </View>
     )
+}
+
+export function Overview() { //Overview tab
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Overview" component={Portfolio} options = {{
+                headerShown: false,
+            }} />
+            <Stack.Screen name="Transaction History" component={TransactionHistory} options = {{
+
+            }} />
+        </Stack.Navigator>
+    );
 }
 
 const styles = StyleSheet.create({

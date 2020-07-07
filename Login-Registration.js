@@ -28,12 +28,12 @@ class Registration extends React.Component {
                     email: this.state.email,
                     password: sha256(this.state.password)
                 }),
-            }).then((response)=>response.text())
+            }); /*.then((response)=>response.text())
                 .then((text)=>{
                     if (text === "login successful") {
 
                     }
-                })
+                }) */
         } else {
             invalidPasswordAlert()
             console.log('blol');
@@ -102,6 +102,7 @@ class Registration extends React.Component {
     }
 }
 
+
 class Login extends React.Component {
 
     constructor(props){
@@ -120,12 +121,13 @@ class Login extends React.Component {
                 username: this.state.username,
                 password: sha256(this.state.password)
             }),
-        })/*.then((response) => response.text())
+        }).then((response) => response.text())
             .then((text) => {
                 if (text === "login successful") {
+                    this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
 
                 }
-        })*/
+        })
     }
     render() {
         return(
