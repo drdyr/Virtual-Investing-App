@@ -40,6 +40,19 @@ export default class App extends Component {
         )
     }
 
+    Overview() { //Overview tab
+        return (
+            <Stack.Navigator>
+                <Stack.Screen name="Overview" component={Portfolio} options = {{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="Transaction History" component={TransactionHistory} options = {{
+
+                }} />
+            </Stack.Navigator>
+        );
+    }
+
     LoginToApp() {
         return (
             <NavigationContainer independent={true}>
@@ -56,18 +69,7 @@ export default class App extends Component {
 
         );
     }
-    Overview() { //Overview tab
-        return (
-            <Stack.Navigator>
-                <Stack.Screen name="Overview" component={Portfolio} options = {{
-                    headerShown: false,
-                }} />
-                <Stack.Screen name="Transaction History" component={TransactionHistory} options = {{
 
-                }} />
-            </Stack.Navigator>
-        );
-    }
 
     MainApp() {
         return (
@@ -120,7 +122,14 @@ export default class App extends Component {
     }
     render() {
         return (
-            this.MainApp()
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName={'Login'}>
+                    <Stack.Screen name='Login' component={this.LoginToApp} />
+                    <Stack.Screen name='App' component={this.MainApp} />
+
+                </Stack.Navigator>
+            </NavigationContainer>
+
 
         );
     }

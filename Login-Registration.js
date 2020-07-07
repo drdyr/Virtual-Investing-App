@@ -28,7 +28,12 @@ class Registration extends React.Component {
                     email: this.state.email,
                     password: sha256(this.state.password)
                 }),
-            });
+            }).then((response)=>response.text())
+                .then((text)=>{
+                    if (text === "login successful") {
+
+                    }
+                })
         } else {
             invalidPasswordAlert()
             console.log('blol');
