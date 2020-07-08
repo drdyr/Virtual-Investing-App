@@ -9,6 +9,10 @@ import { LoginScreen, RegistrationScreen } from './Login-Registration.js'
 import { Stocks } from "./Stocks";
 import { Overview } from "./Overview";
 import { SettingsScreen } from "./Settings";
+import {
+    LineChart,
+    PieChart,
+} from "react-native-chart-kit";
 //SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
 
 const Tab = createBottomTabNavigator();

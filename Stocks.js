@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import {SearchBar} from "react-native-elements";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from "@react-navigation/stack";
-
+import {
+    LineChart,
+    PieChart,
+    ContributionGraph,
+} from "react-native-chart-kit";
 
 const Stack = createStackNavigator();
 
@@ -168,6 +172,41 @@ function Stock({ route, navigation }) {
             </TouchableOpacity>
             <Text style={styles.stockName}> {buyCount} </Text>
 
+            <LineChart
+                data={{
+                    labels: [
+                        '1',
+                        '2',
+                        '3',
+                        '4',
+                        '5',
+                        '6',
+                    ],
+                    datasets: [
+                        {
+                            data: [Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000)],
+                            strokeWidth: 2,
+                        },
+                    ],
+                }}
+                width={Dimensions.get('window').width - 16}
+                height={220}
+                chartConfig={{
+                    backgroundColor: '#1cc910',
+                    backgroundGradientFrom: '#eff3ff',
+                    backgroundGradientTo: '#efefef',
+                    decimalPlaces: 2,
+                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    style: {
+                        borderRadius: 16,
+                    },
+                }}
+                style={{
+                    marginVertical: 8,
+                    borderRadius: 16,
+                }}
+            />
+
         </View>
     );
 }
@@ -258,7 +297,6 @@ const styles = StyleSheet.create({
     containerDark: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: 'center',
         backgroundColor: '#004d43',
     },
     button:{
