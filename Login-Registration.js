@@ -1,6 +1,7 @@
 import React from 'react';
 import {sha256} from "js-sha256";
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Registration extends React.Component {
 
@@ -28,12 +29,11 @@ class Registration extends React.Component {
                     email: this.state.email,
                     password: sha256(this.state.password)
                 }),
-            }); /*.then((response)=>response.text())
-                .then((text)=>{
-                    if (text === "login successful") {
-
+            }).then((response) => {
+                    if (response.status !== 200) {
+                        invalidPasswordAlert();
                     }
-                }) */
+                })
         } else {
             invalidPasswordAlert()
             console.log('blol');
@@ -108,6 +108,36 @@ class Login extends React.Component {
     constructor(props){
         super(props);
         this.state ={ username: "", password: ""}
+        this.trySessionId()
+    }
+
+    trySessionId = async () => {
+        let sessionID;
+        try {
+            const value = await AsyncStorage.getItem('@session_id')
+            if(value !== null) {
+                sessionID = value
+            }
+        } catch(e) {
+            // error reading value
+        }
+
+        console.log(sessionID)
+
+        fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sessionID: sessionID
+            }),
+        }).then((response) => {
+            if (response.status === 200) {
+                this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
+            }
+        })
     }
 
     handleSubmit = () => {
@@ -121,9 +151,14 @@ class Login extends React.Component {
                 username: this.state.username,
                 password: sha256(this.state.password)
             }),
-        }).then((response) => response.text())
-            .then((text) => {
-                if (text === "login successful") {
+        }).then((response) => {
+                if (response.status === 200) {
+                    response.text().then((text) => {
+                        try {
+                            AsyncStorage.setItem('@session_id', text)
+                        } catch (e) {
+                        }
+                    })
                     this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
                 }
         })
