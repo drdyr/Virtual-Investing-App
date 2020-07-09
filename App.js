@@ -64,7 +64,6 @@ export default class App extends Component {
                             labelPosition: 'below-icon'
                         }
                     }
-
                 >
                     <Tab.Screen
                         name="Stocks"

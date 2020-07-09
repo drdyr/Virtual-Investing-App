@@ -125,7 +125,6 @@ class Login extends React.Component {
             .then((text) => {
                 if (text === "login successful") {
                     this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
-
                 }
         })
     }

@@ -45,7 +45,9 @@ class StockListing extends React.Component {
                         stockName: this.props.name,
                         stockAbbrev: this.props.abbrev,
                         stockPrice: this.props.value,
-                        priceChange:this.props.change,
+                        priceChange: this.props.change,
+                        minutely: this.props.minutely,
+                        historical: this.props.historical
                     });
                 }}
             >
@@ -130,7 +132,7 @@ class FetchStocks extends React.Component {
                 />
                 <FlatList
                     data={this.state.searchedStocks}
-                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} navigation={this.props.navigation}/>}
+                    renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} minutely={item.minutely} historical={item.historical} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
                 />
             </View>
@@ -145,6 +147,8 @@ function Stock({ route, navigation }) {
     const { stockAbbrev } = route.params;
     const { stockPrice } = route.params;
     const { priceChange } = route.params;
+    const { minutely } = route.params;
+    const { historical } = route.params;
 
     function decreaseCount () {
         if (buyCount !== 0) {
@@ -174,17 +178,10 @@ function Stock({ route, navigation }) {
             <Text>Stock Minutely Value Today</Text>
             <LineChart
                 data={{
-                    labels: [
-                        '1',
-                        '2',
-                        '3',
-                        '4',
-                        '5',
-                        '6',
-                    ],
+                    labels: Array.from(Array(51), (_, i) => i*10),
                     datasets: [
                         {
-                            data: [Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000)],
+                            data: minutely,
                             strokeWidth: 2,
                         },
                     ],
@@ -209,17 +206,10 @@ function Stock({ route, navigation }) {
             <Text>Stock Daily Value Last 365 Days</Text>
             <LineChart
                 data={{
-                    labels: [
-                        '1',
-                        '2',
-                        '3',
-                        '4',
-                        '5',
-                        '6',
-                    ],
+                    labels: Array.from(Array(73), (_, i) => i*5),
                     datasets: [
                         {
-                            data: [Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000), Math.floor((Math.random() * 15000) + 5000)],
+                            data: historical,
                             strokeWidth: 2,
                         },
                     ],
