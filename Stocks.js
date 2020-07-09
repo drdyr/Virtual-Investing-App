@@ -140,6 +140,19 @@ class FetchStocks extends React.Component {
     }
 }
 
+function minutesToHours(mins) {
+    if (mins == 0) {
+        return "8:00"
+    }
+    let tmins = mins/60
+    if (Number.isInteger(tmins)) {
+        return (tmins+8) + ":00"
+    } else {
+        return (Math.floor(tmins)+8) + ":30"
+    }
+
+}
+
 function Stock({ route, navigation }) {
     const [buyCount, setCount] = useState(0);
 
@@ -178,7 +191,7 @@ function Stock({ route, navigation }) {
             <Text>Stock Minutely Value Today</Text>
             <LineChart
                 data={{
-                    labels: Array.from(Array(51), (_, i) => i*10),
+                    labels: Array.from(Array(17), (_, i) => i*30),
                     datasets: [
                         {
                             data: minutely,
@@ -189,9 +202,9 @@ function Stock({ route, navigation }) {
                 width={Dimensions.get('window').width - 16}
                 height={220}
                 chartConfig={{
-                    backgroundColor: '#1cc910',
-                    backgroundGradientFrom: '#eff3ff',
-                    backgroundGradientTo: '#efefef',
+                    backgroundColor: '#ffffff',
+                    backgroundGradientFrom: '#ffffff',
+                    backgroundGradientTo: '#ffffff',
                     decimalPlaces: 2,
                     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                     style: {
@@ -202,6 +215,11 @@ function Stock({ route, navigation }) {
                     marginVertical: 8,
                     borderRadius: 16,
                 }}
+                withOuterLines= {false}
+                withInnerLines= {false}
+                withDots= {false}
+                formatXLabel = {minutesToHours}
+                yAxisLabel = "£"
             />
             <Text>Stock Daily Value Last 365 Days</Text>
             <LineChart
