@@ -1,6 +1,15 @@
 import React from 'react';
-import {Header} from "react-native-elements";
-import {StyleSheet, Text, TouchableOpacity, View, Dimensions, ScrollView} from "react-native";
+import {Header, SearchBar} from "react-native-elements";
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Dimensions,
+    ScrollView,
+    ActivityIndicator,
+    FlatList
+} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 import {createStackNavigator} from "@react-navigation/stack";
 import {
@@ -11,6 +20,8 @@ import {
 
 
 const Stack = createStackNavigator();
+
+
 
 function Portfolio({ navigation }){
     let today = new Date();
@@ -35,7 +46,7 @@ function Portfolio({ navigation }){
                 </View>
             </Header>
             <ScrollView style={styles.scrollView}>
-            <Text>Portifolio</Text>
+            <Text>Portfolio</Text>
             <PieChart
                 data={[
                     {
@@ -85,7 +96,7 @@ function Portfolio({ navigation }){
                 absolute
             />
 
-            <Text>Portifolio Value</Text>
+            <Text>Portfolio Value</Text>
 
             <LineChart
                 data={{

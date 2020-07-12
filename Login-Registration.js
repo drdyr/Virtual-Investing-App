@@ -27,13 +27,14 @@ class Registration extends React.Component {
                 body: JSON.stringify({
                     username: this.state.username,
                     email: this.state.email,
-                    password: sha256(this.state.password)
+                    password: sha256(this.state.password),
+                    holdings: {'cash': 100000}
                 }),
             }).then((response) => {
-                    if (response.status !== 200) {
-                        invalidPasswordAlert();
-                    }
-                })
+                if (response.status !== 200) {
+                    invalidPasswordAlert();
+                }
+            })
         } else {
             invalidPasswordAlert()
             console.log('blol');
@@ -152,15 +153,15 @@ class Login extends React.Component {
                 password: sha256(this.state.password)
             }),
         }).then((response) => {
-                if (response.status === 200) {
-                    response.text().then((text) => {
-                        try {
-                            AsyncStorage.setItem('@session_id', text)
-                        } catch (e) {
-                        }
-                    })
-                    this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
-                }
+            if (response.status === 200) {
+                response.text().then((text) => {
+                    try {
+                        AsyncStorage.setItem('@session_id', text)
+                    } catch (e) {
+                    }
+                })
+                this.props.navigation.navigation.navigate('App', {screen: 'Overview'});
+            }
         })
     }
     render() {
@@ -263,5 +264,4 @@ const styles = StyleSheet.create({
     },
 
 });
-
 

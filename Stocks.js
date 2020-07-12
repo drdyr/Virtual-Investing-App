@@ -134,6 +134,8 @@ class FetchStocks extends React.Component {
                     data={this.state.searchedStocks}
                     renderItem={({item}) => <StockListing abbrev={item.abbrev} name={item.name} value={item.value} change={item.change} minutely={item.minutely} historical={item.historical} navigation={this.props.navigation}/>}
                     keyExtractor={({postID}) => postID}
+                    showsHorizontalScrollIndicator={false}
+
                 />
             </View>
         );
