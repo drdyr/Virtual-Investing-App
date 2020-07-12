@@ -1,7 +1,22 @@
-import {View, TouchableOpacity, StyleSheet} from "react-native";
-import React from "react";
-import Text from "react-native-web/src/exports/Text";
-
+import React from 'react';
+import { Header, SearchBar } from "react-native-elements";
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Dimensions,
+    ScrollView,
+    ActivityIndicator,
+    FlatList
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import {
+    LineChart,
+    PieChart,
+    ContributionGraph,
+} from "react-native-chart-kit";
 
 class Logout extends React.Component {
 
@@ -22,7 +37,7 @@ class Logout extends React.Component {
 export function SettingsScreen(navigation) { //Settings tab
     return (
         <View>
-            <Logout navigation={navigation}/>
+            <Logout navigation={navigation} />
         </View>
     )
 }
