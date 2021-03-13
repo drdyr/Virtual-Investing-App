@@ -5,29 +5,25 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign} from '@expo/vector-icons';
-import { LoginScreen, RegistrationScreen } from './Login-Registration.js'
-import { Stocks } from "./Stocks";
-import { Overview } from "./Overview";
-import { SettingsScreen } from "./Settings";
-import {
-    LineChart,
-    PieChart,
-} from "react-native-chart-kit";
-//SQLite.openDatabase("database") i commented this out bc it wouldnt compile for me
+import { LoginScreen, RegistrationScreen } from './Components/Registration.js'
+import Login from "./Components/Login";
+import Stocks from "./Components/Stocks";
+import Overview from "./Components/Overview";
+import SettingsScreen from "./Components/Settings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default class App extends Component {
+const App = () => {
 
-    LoginToApp() {
+    const LoginToApp = () => {
         return (
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Register" component={RegistrationScreen} options={{
 
                     headerShown: false,
                 }} />
-                <Stack.Screen name="Login" component={LoginScreen} options={{
+                <Stack.Screen name="Login" component={Login} options={{
                     headerShown: false,
                 }} />
             </Stack.Navigator>
@@ -36,7 +32,7 @@ export default class App extends Component {
         );
     }
 
-    MainApp() {
+    const MainApp = () => {
         return (
                 <Tab.Navigator
                     initialRouteName={ 'Overview' }
@@ -80,15 +76,15 @@ export default class App extends Component {
                 </Tab.Navigator>
             )
     }
-    render() {
-        return (
+
+    return (
             <NavigationContainer>
                 <Stack.Navigator initialRouteName={'Login'}>
-                    <Stack.Screen name='Login' component={this.LoginToApp} options={{
+                    <Stack.Screen name='Login' component={LoginToApp} options={{
 
                         headerShown: false,
                     }}/>
-                    <Stack.Screen name='App' component={this.MainApp} options={{
+                    <Stack.Screen name='App' component={MainApp} options={{
 
                         headerShown: false,
                     }}/>
@@ -97,11 +93,7 @@ export default class App extends Component {
             </NavigationContainer>
 
 
-        );
-    }
+    );
 }
 
-const styles = StyleSheet.create({
-
-
-});
+export default App;
