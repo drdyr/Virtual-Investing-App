@@ -1,0 +1,20 @@
+[
+ [
+  {
+   "userID": 0,
+   "username": "testddd",
+   "email": "testddd",
+   "password": "testddd"
+  }
+ ],
+ [
+  {
+   "userID": 1,
+   "username": "a",
+   "email": "a",
+   "password": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
+   "sessionID": "34ac7e9b-0292-4944-bd18-ce149d42f556",
+   "sessionExpirationDate": "14/03/21 16:12:19"
+  }
+ ]
+]

@@ -35,13 +35,15 @@ const Registration = ({navigation}) => {
                 if (response.status !== 200) {
                     invalidPasswordAlert();
                 }
+                else{
+                    navigation.navigation.push('Login');
+                }
             })
         } else {
             invalidPasswordAlert()
             console.log('blol');
         }
 
-        // do the things
     }
     return(
             <View style={styles.formContainer}>
