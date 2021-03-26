@@ -1,26 +1,27 @@
 # Use rootexample as userpassword credentials
-version 3.1
+version: "3.1"
 
-services
+services:
 
-  reactnative
-    build
-      context ./frontend
-      dockerfile Dockerfile
-    volumes
+  reactnative:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
       - ./frontend/public:/public
       - ./frontend/src:/src
-    ports
-      - 3000:3000
-    environment
+    ports:
+      - 19002:19002
+      - 19000:19000
+      - 19006:19006
 
-  flask
-    build
-      context ./backend
-      dockerfile Dockerfile
-    ports
-      - 8000:80
-    volumes
+  flask:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
       - ./backend:/app
-    environment
+    environment:
       - PYTHONUNBUFFERED=1
